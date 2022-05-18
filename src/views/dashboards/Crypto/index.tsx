@@ -1,8 +1,8 @@
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
-import Footer from 'src/components/Footer';
+import Footer from '@/components/Footer';
 
 import AccountBalance from './AccountBalance';
 import Wallets from './Wallets';
@@ -12,9 +12,9 @@ import WatchList from './WatchList';
 function DashboardCrypto() {
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>Crypto Dashboard</title>
-      </Helmet>
+      </Helmet> */}
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>

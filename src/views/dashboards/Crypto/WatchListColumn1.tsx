@@ -1,8 +1,8 @@
 import { Card, Box, Typography, Avatar } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import Label from 'src/components/Label';
-import Text from 'src/components/Text';
+import Label from '@/components/Label';
+import Text from '@/components/Text';
 import WatchListColumn1Chart from './WatchListColumn1Chart';
 
 const AvatarWrapper = styled(Avatar)(
@@ -40,7 +40,7 @@ function WatchListColumn1() {
       <Box sx={{ p: 3 }}>
         <Box display="flex" alignItems="center">
           <AvatarWrapper>
-            <img alt="BTC" src="/static/images/placeholders/logo/bitcoin.png" />
+            <img alt="BTC" src="/public/images/placeholders/logo/bitcoin.png" />
           </AvatarWrapper>
           <Box>
             <Typography variant="h4" noWrap>

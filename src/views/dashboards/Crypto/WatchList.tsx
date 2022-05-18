@@ -88,7 +88,7 @@ function WatchList() {
         {!tabs && (
           <Grid item xs={12}>
             <Card sx={{ textAlign: 'center', p: 3 }}>
-              <EmptyResultsWrapper src="/static/images/placeholders/illustrations/1.svg" />
+              <EmptyResultsWrapper src="/public/images/placeholders/illustrations/1.svg" />
 
               <Typography
                 align="center"

@@ -1,10 +1,11 @@
-import { Helmet } from 'react-helmet-async';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
+// import { Helmet } from 'react-helmet-async';
+import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { Grid, Container, Typography, Button, Card } from '@mui/material';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { subDays } from 'date-fns';
-import { CryptoOrder } from 'src/models/crypto_order';
+import { CryptoOrder } from '@/models/crypto_order';
 import RecentOrdersTable from './table';
+import { shortenAddress, useTransactions } from '@usedapp/core';
 
 const orders: CryptoOrder[] = [
   {
@@ -12,7 +13,7 @@ const orders: CryptoOrder[] = [
     orderDetails: 'Token Purchase',
     orderDate: subDays(new Date(), 1).getTime(),
     status: 'completed',
-    orderID: '0x200ad6 . . . a233308fbe',
+    orderID: shortenAddress('0x412c74AcE8c3981aE8E20aEB0528C6900bd07fF8'),
     amountCrypto: 34.4565,
     amount: 56787,
     cryptoCurrency: 'BUSD',
@@ -41,11 +42,13 @@ function PageHeader() {
 }
 
 const transactionsPage = () => {
+  const { transactions } = useTransactions()
+  // console.log(transactions)
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>Transactions | OgasaSwap</title>
-      </Helmet>
+      </Helmet> */}
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
@@ -59,7 +62,7 @@ const transactionsPage = () => {
         >
           <Grid item xs={12}>
             <Card>
-              <RecentOrdersTable cryptoOrders={orders} />
+              <RecentOrdersTable cryptoOrders={transactions} />
             </Card>
           </Grid>
         </Grid>

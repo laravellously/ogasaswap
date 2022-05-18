@@ -6,11 +6,10 @@ import {
   CardActions,
   Grid,
   Container,
-  CardContent
-} from '@mui/material';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Helmet } from 'react-helmet-async';
-import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone';
+  CardContent,
+} from "@mui/material";
+import PageTitleWrapper from "@/components/PageTitleWrapper";
+import { ShareButton } from "@/components/ShareButton"
 
 function PageHeader() {
   return (
@@ -30,11 +29,9 @@ function PageHeader() {
 }
 
 const AirdropPage = () => {
+
   return (
     <>
-      <Helmet>
-        <title>Airdrop | Ogasaswap</title>
-      </Helmet>
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
@@ -44,7 +41,7 @@ const AirdropPage = () => {
             <Card>
               <CardMedia
                 sx={{ height: 240 }}
-                image="/static/images/placeholders/covers/6.jpg"
+                image="/public/images/placeholders/covers/6.jpg"
                 title="Airdrop"
               />
               <CardContent>
@@ -57,13 +54,7 @@ const AirdropPage = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button
-                  size="small"
-                  startIcon={<ShareTwoToneIcon />}
-                  variant="outlined"
-                >
-                  Share On Twitter
-                </Button>
+                <ShareButton />
               </CardActions>
             </Card>
           </Grid>
@@ -71,7 +62,7 @@ const AirdropPage = () => {
             <Card>
               <CardMedia
                 sx={{ height: 240 }}
-                image="/static/images/placeholders/covers/6.jpg"
+                image="/public/images/placeholders/covers/6.jpg"
                 title="Airdrop"
               />
               <CardContent>
@@ -84,13 +75,7 @@ const AirdropPage = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button
-                  size="small"
-                  startIcon={<ShareTwoToneIcon />}
-                  variant="outlined"
-                >
-                  Share On Twitter
-                </Button>
+                <ShareButton />
               </CardActions>
             </Card>
           </Grid>
@@ -98,7 +83,7 @@ const AirdropPage = () => {
             <Card>
               <CardMedia
                 sx={{ height: 240 }}
-                image="/static/images/placeholders/covers/6.jpg"
+                image="/public/images/placeholders/covers/6.jpg"
                 title="Airdrop"
               />
               <CardContent>
@@ -111,18 +96,13 @@ const AirdropPage = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button
-                  size="small"
-                  startIcon={<ShareTwoToneIcon />}
-                  variant="outlined"
-                >
-                  Share On Twitter
-                </Button>
+                <ShareButton />
               </CardActions>
             </Card>
           </Grid>
         </Grid>
       </Container>
+      {/* {addScript('https://twitter.com/share?ref_src=twsrc%5Etfw')} */}
     </>
   );
 };

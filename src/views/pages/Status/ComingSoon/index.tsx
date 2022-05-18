@@ -12,7 +12,7 @@ import {
   Button,
   FormHelperText
 } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import Logo from 'src/components/LogoSign';
 
 import { styled } from '@mui/material/styles';
@@ -75,15 +75,13 @@ function StatusComingSoon() {
     return timeLeft;
   };
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [timeLeft, setTimeLeft] = useState<{string: any}>(calculateTimeLeft());
 
   useEffect(() => {
-    setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
+    setTimeout(() => setTimeLeft(calculateTimeLeft()), 1000);
   });
 
-  const timerComponents = [];
+  const timerComponents: any[] = [];
 
   Object.keys(timeLeft).forEach((interval) => {
     if (!timeLeft[interval]) {
@@ -100,9 +98,9 @@ function StatusComingSoon() {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>Status - Coming Soon</title>
-      </Helmet>
+      </Helmet> */}
       <MainContent>
         <Container maxWidth="md">
           <Logo />

@@ -16,7 +16,7 @@ import {
 import { styled } from '@mui/material/styles';
 import TrendingUp from '@mui/icons-material/TrendingUp';
 import AccountBalanceChart from './AccountBalanceChart';
-import Text from 'src/components/Text';
+import Text from '@/components/Text';
 
 const AccountBalanceChartWrapper = styled(AccountBalanceChart)(
   () => `
@@ -128,7 +128,7 @@ function AccountBalance() {
                     >
                       <img
                         alt="BTC"
-                        src="/static/images/placeholders/logo/bitcoin.png"
+                        src="/public/images/placeholders/logo/bitcoin.png"
                       />
                     </ListItemAvatar>
                     <ListItemText
@@ -157,7 +157,7 @@ function AccountBalance() {
                     >
                       <img
                         alt="XRP"
-                        src="/static/images/placeholders/logo/ripple.png"
+                        src="/public/images/placeholders/logo/ripple.png"
                       />
                     </ListItemAvatar>
                     <ListItemText
@@ -186,7 +186,7 @@ function AccountBalance() {
                     >
                       <img
                         alt="ADA"
-                        src="/static/images/placeholders/logo/cardano.png"
+                        src="/public/images/placeholders/logo/cardano.png"
                       />
                     </ListItemAvatar>
                     <ListItemText
@@ -215,7 +215,7 @@ function AccountBalance() {
                     >
                       <img
                         alt="ETH"
-                        src="/static/images/placeholders/logo/ethereum.png"
+                        src="/public/images/placeholders/logo/ethereum.png"
                       />
                     </ListItemAvatar>
                     <ListItemText

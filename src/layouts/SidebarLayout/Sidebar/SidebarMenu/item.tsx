@@ -1,7 +1,7 @@
 import { FC, ReactNode, useState, useContext } from 'react';
-import { NavLink as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
-import { SidebarContext } from 'src/contexts/SidebarContext';
+import { SidebarContext } from '@/contexts/SidebarContext';
 
 import PropTypes from 'prop-types';
 import { Button, Badge, Collapse, ListItem } from '@mui/material';
@@ -24,12 +24,12 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
   link,
   icon: Icon,
   badge,
-  open: openParent,
+  open,
   active,
   name,
   ...rest
 }) => {
-  const [menuToggle, setMenuToggle] = useState<boolean>(openParent);
+  const [menuToggle, setMenuToggle] = useState<boolean>(false);
 
   const { toggleSidebar } = useContext(SidebarContext);
 
@@ -58,10 +58,9 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
   return (
     <ListItem component="div" key={name} {...rest}>
       <Button
-        activeClassName="Mui-active"
-        component={RouterLink}
+        className={clsx({ 'Mui-active': menuToggle })}
+        component={RouterLink} to={link}
         onClick={toggleSidebar}
-        to={link}
         startIcon={Icon && <Icon />}
       >
         {name}

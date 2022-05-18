@@ -6,7 +6,7 @@ function PageHeader() {
   const user =
   {
     name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg'
+    avatar: '/public/images/avatars/1.jpg'
   };
   const theme = useTheme();
 

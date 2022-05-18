@@ -6,7 +6,7 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import Logo from 'src/components/LogoSign';
 
 import { styled } from '@mui/material/styles';
@@ -30,9 +30,9 @@ function StatusMaintenance() {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>Status - Maintenance</title>
-      </Helmet>
+      </Helmet> */}
       <MainContent>
         <Container maxWidth="md">
           <Logo />

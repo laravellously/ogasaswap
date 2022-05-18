@@ -10,8 +10,8 @@ import {
 } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import Text from 'src/components/Text';
-import Label from 'src/components/Label';
+import Text from '@/components/Text';
+import Label from '@/components/Label';
 import WatchListRowChart from './WatchListRowChart';
 
 const AvatarWrapper = styled(Avatar)(
@@ -66,7 +66,7 @@ function WatchListRow() {
               <AvatarWrapper>
                 <img
                   alt="BTC"
-                  src="/static/images/placeholders/logo/bitcoin.png"
+                  src="/public/images/placeholders/logo/bitcoin.png"
                 />
               </AvatarWrapper>
               <Box>
@@ -111,7 +111,7 @@ function WatchListRow() {
               <AvatarWrapper>
                 <img
                   alt="ETH"
-                  src="/static/images/placeholders/logo/ethereum.png"
+                  src="/public/images/placeholders/logo/ethereum.png"
                 />
               </AvatarWrapper>
               <Box>
@@ -156,7 +156,7 @@ function WatchListRow() {
               <AvatarWrapper>
                 <img
                   alt="ADA"
-                  src="/static/images/placeholders/logo/cardano.png"
+                  src="/public/images/placeholders/logo/cardano.png"
                 />
               </AvatarWrapper>
               <Box>

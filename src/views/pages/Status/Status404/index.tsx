@@ -9,11 +9,11 @@ import {
   OutlinedInput,
   InputAdornment
 } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 
 import { styled } from '@mui/material/styles';
-import BaseLayout from 'src/layouts/BaseLayout';
+import BaseLayout from '@/layouts/BaseLayout';
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -42,14 +42,14 @@ const ButtonSearch = styled(Button)(
 function Status404() {
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>Status - 404</title>
-      </Helmet>
+      </Helmet> */}
       <BaseLayout>
         <MainContent>
           <Container maxWidth="md">
             <Box textAlign="center">
-              <img alt="404" height={180} src="/static/images/status/404.svg" />
+              <img alt="404" height={180} src="/images/status/404.svg" />
               <Typography variant="h2" sx={{ my: 2 }}>
                 The page you were looking for doesn't exist.
               </Typography>
@@ -84,7 +84,7 @@ function Status404() {
                   />
                 </FormControl>
                 <Divider sx={{ my: 4 }}>OR</Divider>
-                <Button href="/overview" variant="outlined">
+                <Button href="/" variant="outlined">
                   Go to homepage
                 </Button>
               </Card>

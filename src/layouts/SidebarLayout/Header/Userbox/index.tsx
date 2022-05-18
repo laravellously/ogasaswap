@@ -8,6 +8,7 @@ import {
   lighten,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   Popover,
   Snackbar,
@@ -20,7 +21,10 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
-import { shortenAddress, useEthers } from '@usedapp/core';
+import { shortenAddress, useEthers, ChainId } from '@usedapp/core';
+// import WalletConnectProvider from '@walletconnect/web3-provider'
+import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js';
+import Web3Modal from 'web3modal'
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -60,10 +64,43 @@ const UserBoxDescription = styled(Typography)(
 function HeaderUserbox() {
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
-  const { activateBrowserWallet, account, switchNetwork, chainId, error } =
+  const { activate, deactivate, account, switchNetwork, chainId, error } =
     useEthers();
   const [activateError, setActivateError] = useState('');
   const [openSnack, setSnackOpen] = useState(false);
+
+  const activateProvider = async () => {
+    const providerOptions = {
+      injected: {
+        display: {
+          name: 'Metamask',
+          description: 'Connect with the provider in your Browser',
+        },
+        package: null,
+      },
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          rpc: {
+            [ChainId.Hardhat]: 'http://127.0.0.1:8545'
+          },
+          bridge: 'https://bridge.walletconnect.org',
+          infuraId: 'd8df2cb7844e4a54ab0a782f608749dd',
+        },
+      },
+    }
+
+    const web3Modal = new Web3Modal({
+      providerOptions,
+    })
+    try {
+      const provider = await web3Modal.connect()
+      await activate(provider)
+      setActivateError('')
+    } catch (error: any) {
+      setActivateError(error.message)
+    }
+  }
 
   useEffect(() => {
     if (error) {
@@ -72,7 +109,7 @@ function HeaderUserbox() {
     }
   }, [error]);
 
-  if (account && chainId !== 97) switchNetwork(97);
+  if (account && chainId !== 31337) switchNetwork(31337);
 
   const handleOpen = (): void => {
     setOpen(true);
@@ -103,7 +140,7 @@ function HeaderUserbox() {
             color="primary"
             onClick={() => {
               setActivateError('');
-              activateBrowserWallet();
+              activateProvider();
             }}
             startIcon={<AccountBalanceWalletTwoToneIcon />}
           >
@@ -160,7 +197,7 @@ function HeaderUserbox() {
                 <AccountTreeTwoToneIcon fontSize="small" />
                 <ListItemText primary="Referrals" />
               </ListItem>
-              <ListItem button to="/dashboard" component={NavLink}>
+              <ListItem button to="#0" onClick={() => deactivate()} component={NavLink}>
                 <LockOpenTwoToneIcon fontSize="small" />
                 <ListItemText primary="Disconnect Wallet" />
               </ListItem>

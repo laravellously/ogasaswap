@@ -8,7 +8,7 @@ import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserC
 
 export interface MenuItem {
   link?: string;
-  icon?: ReactNode;
+  icon?: any
   badge?: string;
   items?: MenuItem[];
   name: string;
@@ -25,7 +25,7 @@ const menuItems: MenuItems[] = [
     items: [
       {
         name: 'Dashboard',
-        link: '/dashboard',
+        link: '/',
         icon: DashboardTwoToneIcon
       },
       {

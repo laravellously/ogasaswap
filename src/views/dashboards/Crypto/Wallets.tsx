@@ -80,7 +80,7 @@ function Wallets() {
               <AvatarWrapper>
                 <img
                   alt="BTC"
-                  src="/static/images/placeholders/logo/bitcoin.png"
+                  src="/public/images/placeholders/logo/bitcoin.png"
                 />
               </AvatarWrapper>
               <Typography variant="h5" noWrap>
@@ -106,7 +106,7 @@ function Wallets() {
               <AvatarWrapper>
                 <img
                   alt="Ripple"
-                  src="/static/images/placeholders/logo/ripple.png"
+                  src="/public/images/placeholders/logo/ripple.png"
                 />
               </AvatarWrapper>
               <Typography variant="h5" noWrap>
@@ -132,7 +132,7 @@ function Wallets() {
               <AvatarWrapper>
                 <img
                   alt="Cardano"
-                  src="/static/images/placeholders/logo/cardano.png"
+                  src="/public/images/placeholders/logo/cardano.png"
                 />
               </AvatarWrapper>
               <Typography variant="h5" noWrap>

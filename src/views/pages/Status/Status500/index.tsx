@@ -7,7 +7,7 @@ import {
   Button,
   Grid
 } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone';
 import LoadingButton from '@mui/lab/LoadingButton';
 
@@ -52,9 +52,9 @@ function Status500() {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>Status - 500</title>
-      </Helmet>
+      </Helmet> */}
       <MainContent>
         <Grid
           container
@@ -75,7 +75,7 @@ function Status500() {
                 <img
                   alt="500"
                   height={260}
-                  src="/static/images/status/500.svg"
+                  src="/images/status/500.svg"
                 />
                 <Typography variant="h2" sx={{ my: 2 }}>
                   There was an error, please try again later
