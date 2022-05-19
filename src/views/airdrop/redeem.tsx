@@ -21,9 +21,9 @@ import {
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import AddTaskTwoToneIcon from '@mui/icons-material/AddTaskTwoTone';
 import { styled } from '@mui/material/styles';
-import { AirdropContract } from '@/utils/contract'
+// import { AirdropContract } from '@/utils/contract'
 import { useEthers } from '@usedapp/core';
-import { formatEther, parseEther } from 'ethers/lib/utils';
+import { parseEther } from 'ethers/lib/utils';
 import React from 'react';
 import { useNavigate } from 'react-router';
 
@@ -73,7 +73,7 @@ const RedeemPage = () => {
     const userAcc = account ? account : ''
     try{
       // await AirdropContract.createVestingSchedule(userAcc, Date.now(), 0, 3600, 360, false, parseEther(amount))
-      await AirdropContract.participate(userAcc, {value: parseEther(amount)})
+      // await AirdropContract.participate(userAcc, {value: parseEther(amount)})
       navigate('/transactions')
     } catch(e: any) {
       setErrorMsg("An Error Occured: "+e.message)

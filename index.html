@@ -9,6 +9,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400&display=swap" rel="stylesheet" /> -->
+  <script>
+    window.global = window;
+  </script>
+  <script type="module">
+    import process from "process";
+    import { Buffer } from "buffer";
+    import EventEmitter from "events";
+    
+    window.process = process;
+    window.Buffer = Buffer;
+    window.EventEmitter = EventEmitter;
+  </script>
   <title>Ogasa Sale</title>
 </head>
 

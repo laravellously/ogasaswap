@@ -1,13 +1,5 @@
-import React, { Component, Ref } from "react";
 import { Button } from "@mui/material";
 import ShareTwoToneIcon from "@mui/icons-material/ShareTwoTone";
-
-type NetworkLink<LinkOptions> = (url: string, options: LinkOptions) => string;
-
-const isPromise = (obj: any | Promise<any>) =>
-  !!obj &&
-  (typeof obj === "object" || typeof obj === "function") &&
-  typeof obj.then === "function";
 
 function windowOpen(
   url: string,

@@ -1,4 +1,4 @@
-import { useState, MouseEvent, ChangeEvent } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -29,16 +29,10 @@ import { styled } from "@mui/material/styles";
 import LinkTwoToneIcon from "@mui/icons-material/LinkTwoTone";
 import VisibilityTwoToneIcon from "@mui/icons-material/VisibilityTwoTone";
 import ContentCopyTwoToneIcon from "@mui/icons-material/ContentCopyTwoTone";
-// import { format, subHours, subWeeks, subDays } from "date-fns";
-import {
-  useEthers,
-  shortenAddress,
-  useTransactions,
-  useContractFunction,
-} from "@usedapp/core";
 import { useCopyToClipboard } from "react-use";
-import { CrowdsaleContract, TokenContract } from "@/utils/contract";
 import minify from "@/utils/minify";
+import { useConnect, useContractEvent, useSigner, useAccount } from "wagmi";
+import { TokenContract, CrowdsaleContract } from "@/utils/contract";
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -53,7 +47,15 @@ const ReferralCard = () => {
   const [open, setOpen] = useState(false);
   const [refLink, setRefLink] = useState("");
   const [state, copyToClipboard] = useCopyToClipboard();
-  const { account } = useEthers();
+  const { data: signer } = useSigner();
+  const { isConnected } = useConnect()
+  const { data: account } = useAccount();
+
+  useContractEvent(
+    TokenContract,
+    'Transfer',
+    (event) => console.log(event)
+  )
 
   const handleClick = () => {
     setCopied(true);
@@ -94,7 +96,7 @@ const ReferralCard = () => {
                 <LinkTwoToneIcon />
               </AvatarSuccess>
             </ListItemAvatar>
-            {!account && (
+            {!isConnected && (
               <>
                 <ListItemText
                   primaryTypographyProps={{ variant: "h5", gutterBottom: true }}
@@ -107,7 +109,7 @@ const ReferralCard = () => {
                 />
               </>
             )}
-            {account && (
+            {isConnected && (
               <>
                 <ListItemText
                   primaryTypographyProps={{ variant: "h5", gutterBottom: true }}
@@ -145,10 +147,12 @@ const ReferralCard = () => {
                       size="small"
                       color="primary"
                       onClick={async () => {
-                        let link = await CrowdsaleContract.getRefLink();
+                        // console.log(await TokenContract.name())
+                        let link = "";
+                        // let link = await CrowdsaleContract.getRefLink();
                         // const minify = async () => {
-                          const url =
-                            "https://sales.ogasaswap.com/invite?ref=" + account;
+                        const url =
+                          "https://sales.ogasaswap.com/invite?ref=" + account;
                         //   const resp = await fetch(
                         //     "https://is.gd/create.php?format=simple&url=" + url,
                         //     {
@@ -161,14 +165,21 @@ const ReferralCard = () => {
                         //   console.log(resp.);
                         //   return resp;
                         // };
-                        console.log("> Link: " + link);
-                        if (
-                          link ==
-                          "0x0000000000000000000000000000000000000000000000000000000000000000"
-                        )
+                        // console.log("> Link: " + link);
+                        // if (
+                        //   link ==
+                        //   "0x0000000000000000000000000000000000000000000000000000000000000000"
+                        // )
                           // link = await minify();
                           // setRefLink(link)
-                          console.log("> Shortened Link: " + (await minify("https://is.gd/create.php?format=simple&url=" + url, {provider: 'isgd'})));
+                          // console.log(
+                          //   "> Shortened Link: " +
+                          //     (await minify(
+                          //       "https://is.gd/create.php?format=simple&url=" +
+                          //         url,
+                          //       { provider: "isgd" }
+                          //     ))
+                          // );
                       }}
                     >
                       Get Link
@@ -186,74 +197,8 @@ const ReferralCard = () => {
 
 const ReferralTable = () => {
   const theme = useTheme();
-  const { transactions } = useTransactions();
 
-  return (
-    <>
-      {transactions.length > 0 ? (
-        <Card>
-          <CardHeader
-            subheaderTypographyProps={{}}
-            titleTypographyProps={{}}
-            title="Referral List"
-            subheader="View your on-chain referrals"
-          />
-          <Divider />
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Wallet</TableCell>
-                  <TableCell>Date/Time</TableCell>
-                  <TableCell align="right">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {transactions.map((tx) => (
-                  <TableRow key={tx.transaction.hash} hover>
-                    <TableCell>{shortenAddress(tx.transaction.hash)}</TableCell>
-                    <TableCell>
-                      {/* {format(log.date, "dd MMMM, yyyy - h:mm:ss a")} */}
-                    </TableCell>
-                    <TableCell align="right">
-                      <Tooltip placement="top" title="View on BscScan" arrow>
-                        <IconButton
-                          sx={{
-                            "&:hover": {
-                              background: theme.colors.error.lighter,
-                            },
-                            color: theme.palette.error.main,
-                          }}
-                          color="inherit"
-                          size="small"
-                        >
-                          <VisibilityTwoToneIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Card>
-      ) : (
-        <Card>
-          <CardContent>
-            <Typography
-              variant="h3"
-              fontWeight="bold"
-              color="text.primary"
-              gutterBottom
-              noWrap
-            >
-              No data yet
-            </Typography>
-          </CardContent>
-        </Card>
-      )}
-    </>
-  );
+  return <></>;
 };
 
 const ReferralPage = () => {

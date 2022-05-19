@@ -34,11 +34,6 @@ const menuItems: MenuItems[] = [
         icon: WidgetsTwoToneIcon
       },
       {
-        name: 'Transactions',
-        link: '/transactions',
-        icon: VerifiedUserTwoToneIcon
-      },
-      {
         name: 'Referrals',
         link: '/referrals',
         icon: SupervisedUserCircleTwoToneIcon

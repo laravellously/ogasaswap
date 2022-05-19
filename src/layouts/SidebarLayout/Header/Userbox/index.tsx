@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import * as React from "react";
+import { NavLink } from "react-router-dom";
 import {
   Box,
   Button,
@@ -8,23 +8,21 @@ import {
   lighten,
   List,
   ListItem,
-  ListItemButton,
   ListItemText,
   Popover,
   Snackbar,
-  Typography
-} from '@mui/material';
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
-import VerifiedUserTwoToneIcon from '@mui/icons-material/VerifiedUserTwoTone';
-import { styled } from '@mui/material/styles';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
-import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
-import { shortenAddress, useEthers, ChainId } from '@usedapp/core';
-// import WalletConnectProvider from '@walletconnect/web3-provider'
-import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js';
-import Web3Modal from 'web3modal'
+  Typography,
+} from "@mui/material";
+import Jazzicon from "react-jazzicon";
+import VerifiedUserTwoToneIcon from "@mui/icons-material/VerifiedUserTwoTone";
+import { styled } from "@mui/material/styles";
+import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
+import LockOpenTwoToneIcon from "@mui/icons-material/LockOpenTwoTone";
+import AccountTreeTwoToneIcon from "@mui/icons-material/AccountTreeTwoTone";
+import AccountBalanceWalletTwoToneIcon from "@mui/icons-material/AccountBalanceWalletTwoTone";
+
+import { useAccount, useConnect, useDisconnect, useNetwork } from "wagmi";
+import { addressToSeed, shortenString } from "@/utils/common";
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -62,54 +60,35 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
-  const ref = useRef<any>(null);
-  const [isOpen, setOpen] = useState<boolean>(false);
-  const { activate, deactivate, account, switchNetwork, chainId, error } =
-    useEthers();
-  const [activateError, setActivateError] = useState('');
-  const [openSnack, setSnackOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
 
-  const activateProvider = async () => {
-    const providerOptions = {
-      injected: {
-        display: {
-          name: 'Metamask',
-          description: 'Connect with the provider in your Browser',
-        },
-        package: null,
-      },
-      walletconnect: {
-        package: WalletConnectProvider,
-        options: {
-          rpc: {
-            [ChainId.Hardhat]: 'http://127.0.0.1:8545'
-          },
-          bridge: 'https://bridge.walletconnect.org',
-          infuraId: 'd8df2cb7844e4a54ab0a782f608749dd',
-        },
-      },
-    }
+  const handleAnchorClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const web3Modal = new Web3Modal({
-      providerOptions,
-    })
-    try {
-      const provider = await web3Modal.connect()
-      await activate(provider)
-      setActivateError('')
-    } catch (error: any) {
-      setActivateError(error.message)
-    }
-  }
+  const handleAnchorClose = () => {
+    setAnchorEl(null);
+  };
+  const [isOpen, setOpen] = React.useState<boolean>(false);
+  const [activateError, setActivateError] = React.useState("");
+  const [openSnack, setSnackOpen] = React.useState(false);
 
-  useEffect(() => {
+  const { data: account } = useAccount();
+  const { connect, connectors, isConnected, error } = useConnect();
+  const { disconnect } = useDisconnect();
+  const { activeChain, chains, switchNetwork } = useNetwork();
+
+  React.useEffect(() => {
     if (error) {
       setActivateError(error.message);
       setSnackOpen(true);
     }
   }, [error]);
 
-  if (account && chainId !== 31337) switchNetwork(31337);
+  if (isConnected && activeChain?.unsupported && switchNetwork)
+    switchNetwork(chains[1].id);
 
   const handleOpen = (): void => {
     setOpen(true);
@@ -123,6 +102,9 @@ function HeaderUserbox() {
     setSnackOpen(false);
   };
 
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   return (
     <>
       <Snackbar
@@ -131,16 +113,45 @@ function HeaderUserbox() {
         onClose={handleSnackClose}
         message={activateError}
       />
-      {!account && (
+      {!isConnected && (
         <>
+          {/* <Dialog
+            open={isOpen}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Connect Wallet"}
+            </DialogTitle>
+            <List sx={{ pt: 0 }}>
+              {connectors
+                .filter((x) => x.ready && x.id !== activeConnector?.id)
+                .map((x) => (
+                  <ListItem button key={x.id} onClick={() => connect(x)}>
+                    <ListItemText primary={x.name} />
+                  </ListItem>
+                ))}
+            </List>
+            <DialogContent>
+              <Stack spacing={2}></Stack>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} autoFocus>
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog> */}
           <Button
             sx={{ margin: 1 }}
             variant="contained"
             size="large"
             color="primary"
             onClick={() => {
-              setActivateError('');
-              activateProvider();
+              setActivateError("");
+              // setOpen(true);
+              connect(connectors[0]);
+              // activateProvider();
             }}
             startIcon={<AccountBalanceWalletTwoToneIcon />}
           >
@@ -148,15 +159,15 @@ function HeaderUserbox() {
           </Button>
         </>
       )}
-      {account && (
+      {isConnected && (
         <>
-          <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-            <Jazzicon diameter={40} seed={jsNumberForAddress(account)} />
+          <UserBoxButton color="secondary" onClick={handleAnchorClick}>
+            <Jazzicon diameter={40} seed={addressToSeed(account?.address)} />
             <Hidden mdDown>
               <UserBoxText>
                 <UserBoxLabel variant="body1">Connected</UserBoxLabel>
                 <UserBoxDescription variant="body2">
-                  {shortenAddress(account)}
+                  {shortenString(account?.address)}
                 </UserBoxDescription>
               </UserBoxText>
             </Hidden>
@@ -165,25 +176,25 @@ function HeaderUserbox() {
             </Hidden>
           </UserBoxButton>
           <Popover
-            anchorEl={ref.current}
-            onClose={handleClose}
-            open={isOpen}
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleAnchorClose}
             anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right'
+              vertical: "top",
+              horizontal: "right",
             }}
             transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right'
+              vertical: "top",
+              horizontal: "right",
             }}
           >
             <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-              {/* <Avatar variant="rounded" alt={user.name} src={user.avatar} /> */}
-              <Jazzicon diameter={40} seed={jsNumberForAddress(account)} />
+              <Jazzicon diameter={40} seed={addressToSeed(account?.address)} />
               <UserBoxText>
                 <UserBoxLabel variant="body1">Connected</UserBoxLabel>
                 <UserBoxDescription variant="body2">
-                  {shortenAddress(account)}
+                  {shortenString(account?.address)}
                 </UserBoxDescription>
               </UserBoxText>
             </MenuUserBox>
@@ -197,7 +208,7 @@ function HeaderUserbox() {
                 <AccountTreeTwoToneIcon fontSize="small" />
                 <ListItemText primary="Referrals" />
               </ListItem>
-              <ListItem button to="#0" onClick={() => deactivate()} component={NavLink}>
+              <ListItem button onClick={() => disconnect()}>
                 <LockOpenTwoToneIcon fontSize="small" />
                 <ListItemText primary="Disconnect Wallet" />
               </ListItem>

@@ -15,15 +15,8 @@ import {
 
 import { styled } from '@mui/material/styles';
 import TrendingUp from '@mui/icons-material/TrendingUp';
-import AccountBalanceChart from './AccountBalanceChart';
 import Text from '@/components/Text';
 
-const AccountBalanceChartWrapper = styled(AccountBalanceChart)(
-  () => `
-      width: 100%;
-      height: 100%;
-`
-);
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.main};
@@ -35,35 +28,25 @@ const AvatarSuccess = styled(Avatar)(
 );
 
 function AccountBalance() {
-  
-  const cryptoBalance = {
-    datasets: [
-      {
-        data: [20, 10, 40, 30],
-        backgroundColor: ['#ff9900', '#1c81c2', '#333', '#5c6ac0']
-      }
-    ],
-    labels: ['Bitcoin', 'Ripple', 'Cardano', 'Ethereum']
-  };
 
   return (
     <Card>
       <Grid spacing={0} container>
         <Grid item xs={12} md={6}>
           <Box p={4}>
-            <Typography sx={{ pb: 3 }} variant="h4">
-              Account Balance
+            <Typography sx={{ pb: 3 }} variant="h3">
+              My Contributions
             </Typography>
             <Box>
               <Typography variant="h1" gutterBottom>
-                $54,584.23
+                {"100 OGASA"}
               </Typography>
               <Typography
                 variant="h4"
                 fontWeight="normal"
                 color="text.secondary"
               >
-                1.0045983485234 BTC
+                0.0045983485234 USD
               </Typography>
               <Box display="flex" sx={{ py: 4 }} alignItems="center">
                 <AvatarSuccess sx={{ mr: 2 }} variant="rounded">
@@ -80,7 +63,7 @@ function AccountBalance() {
             <Grid container spacing={3}>
               <Grid sm item>
                 <Button fullWidth variant="outlined">
-                  Send
+                  Start
                 </Button>
               </Grid>
               <Grid sm item>
@@ -104,7 +87,7 @@ function AccountBalance() {
           </Hidden>
           <Box p={4} flex={1}>
             <Grid container spacing={0}>
-              <Grid
+              {/* <Grid
                 xs={12}
                 sm={5}
                 item
@@ -115,7 +98,7 @@ function AccountBalance() {
                 <Box style={{ height: '160px' }}>
                   <AccountBalanceChartWrapper data={cryptoBalance} />
                 </Box>
-              </Grid>
+              </Grid> */}
               <Grid xs={12} sm={7} item display="flex" alignItems="center">
                 <List disablePadding sx={{ width: '100%' }}>
                   <ListItem disableGutters>

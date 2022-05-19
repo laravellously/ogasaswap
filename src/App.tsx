@@ -20,7 +20,6 @@ const Loader = (Component: any) => (props: any) =>
   );
 
 const Home = Loader(lazy(() => import('@/views/dashboards/Crypto')))
-const Transactions = Loader(lazy(() => import("@/views/transactions")));
 const ReferralPage = Loader(lazy(() => import("@/views/referrals")));
 const AirdropPage = Loader(lazy(() => import("@/views/airdrop")));
 const RedeemAirdropPage = Loader(lazy(() => import("@/views/airdrop/redeem")));
@@ -49,7 +48,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<SidebarLayout />}>
             <Route index element={<Home />} />
-            <Route path="transactions" element={<Transactions />} />
             <Route path="referrals" element={<ReferralPage />} />
             <Route path="airdrop" element={<AirdropPage />} />
             <Route path="redeem" element={<RedeemAirdropPage />} />

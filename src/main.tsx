@@ -4,29 +4,132 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import "nprogress/nprogress.css";
 import { SidebarProvider } from "./contexts/SidebarContext";
-import { DAppProvider, Config, Hardhat } from "@usedapp/core";
+// import { DAppProvider, Config, Hardhat } from "@usedapp/core";
 
-(window.global as any) = globalThis
 
-const config: Config = {
-  networks: [Hardhat],
-  readOnlyChainId: Hardhat.chainId,
-  readOnlyUrls: {
-    [Hardhat.chainId]: 'http://127.0.0.1:8545'
+// const config: Config = {
+//   networks: [Hardhat],
+//   readOnlyChainId: Hardhat.chainId,
+//   readOnlyUrls: {
+//     [Hardhat.chainId]: 'http://127.0.0.1:8545'
+//   },
+//   multicallAddresses: {
+//     '31337': '0x9a9f2ccfde556a7e9ff0848998aa4a0cfd8863ae'
+//   },
+//   autoConnect: true
+// };
+
+import { Provider, createClient as createWagmiClient, Chain } from 'wagmi'
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import {getDefaultProvider, providers} from "ethers";
+
+const chains = [
+  {
+      id: 56,
+      name: 'Binance Smart Chain',
+      nativeCurrency: {
+          name: 'BNB',
+          symbol: 'BNB',
+          decimals: 18,
+      },
+      rpcUrls: {
+          default: 'https://bsc-dataseed.binance.org',
+          default2: "https://bsc-dataseed1.defibit.io/",
+          default3: "https://bsc-dataseed1.ninicoin.io/"
+      },
+      blockExplorers: {
+          etherscan: {
+              name: 'BNB Smart Chain Explorer',
+              url: 'https://bscscan.com'
+          },
+          default: {
+              name: 'BNB Smart Chain Explorer',
+              url: 'https://bscscan.com'
+          }
+      }
   },
-  multicallAddresses: {
-    '31337': '0x9a9f2ccfde556a7e9ff0848998aa4a0cfd8863ae'
+  {
+    id: 97,
+    name: 'Binance Testnet Chain',
+    nativeCurrency: {
+        name: 'BNB',
+        symbol: 'BNB',
+        decimals: 18,
+    },
+    rpcUrls: {
+        default: 'https://data-seed-prebsc-2-s3.binance.org:8545/',
+        default2: "https://data-seed-prebsc-1-s3.binance.org:8545",
+        default3: "https://data-seed-prebsc-2-s2.binance.org:8545/"
+    },
+    blockExplorers: {
+        etherscan: {
+            name: 'BNB Testnet Chain Explorer',
+            url: 'https://testnet.bscscan.com'
+        },
+        default: {
+            name: 'BNB Testnet Chain Explorer',
+            url: 'https://testnet.bscscan.com'
+        }
+    }
+  }
+]
+
+export const coinbaseWalletConnector = ({chainId}: { chainId?: number | undefined }) => new CoinbaseWalletConnector({
+  chains,
+  options: {
+      appName: "wagmi",
+      chainId: chainId,
+      jsonRpcUrl: "https://data-seed-prebsc-2-s2.binance.org:8545/"
+  }
+});
+
+export const injectedConnector = new InjectedConnector({
+  chains,
+  options: {
+      shimDisconnect: true
+  }
+});
+
+export const walletConnectConnector = ({chainId}: { chainId?: number | undefined }) => new WalletConnectConnector({
+  chains,
+  options: {
+      chainId,
+      qrcode: true,
   },
-  autoConnect: true
-};
+})
+
+const connectors = (config: { chainId?: number | undefined }) => {
+  return [
+      injectedConnector,
+      coinbaseWalletConnector(config),
+      walletConnectConnector(config)
+  ]
+}
+
+const provider = ({chainId}: { chainId?: number | undefined }): any => {
+  if (!chainId) return getDefaultProvider();
+  const chain = chains.find((tempChain) => tempChain.id === chainId) as Chain;
+  // const providerUrl = chain.rpcUrls.default;
+  const jsonRpcProvider = new providers.JsonRpcProvider("https://data-seed-prebsc-2-s2.binance.org:8545/", chainId);
+  return jsonRpcProvider
+}
+
+const client = createWagmiClient({
+  autoConnect: true,
+  connectors,
+  provider
+})
 
 ReactDOM.render(
   <React.StrictMode>
     <SidebarProvider>
       <BrowserRouter>
-        <DAppProvider config={config}>
+        <Provider client={client}>
           <App />
-        </DAppProvider>
+        </Provider>
       </BrowserRouter>
     </SidebarProvider>
     </React.StrictMode>,

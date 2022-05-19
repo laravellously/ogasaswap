@@ -1,17 +1,28 @@
-import { FC, ReactNode, useState, useContext } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import clsx from 'clsx';
-import { SidebarContext } from '@/contexts/SidebarContext';
+import {
+  FC,
+  ReactNode,
+  useState,
+  useContext,
+  useMemo,
+  forwardRef,
+} from "react";
+import {
+  Link as RouterLink,
+  LinkProps as RouterLinkProps,
+  useMatch,
+  useResolvedPath
+} from "react-router-dom";
+import clsx from "clsx";
+import { SidebarContext } from "@/contexts/SidebarContext";
+import PropTypes from "prop-types";
+import { Button, Collapse, ListItem } from "@mui/material";
 
-import PropTypes from 'prop-types';
-import { Button, Badge, Collapse, ListItem } from '@mui/material';
-
-import ExpandLessTwoToneIcon from '@mui/icons-material/ExpandLessTwoTone';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
+import ExpandLessTwoToneIcon from "@mui/icons-material/ExpandLessTwoTone";
+import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
 
 interface SidebarMenuItemProps {
   children?: ReactNode;
-  link?: string;
+  link: string;
   icon?: any;
   badge?: string;
   open?: boolean;
@@ -37,11 +48,14 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
     setMenuToggle((Open) => !Open);
   };
 
+  let resolved = useResolvedPath(link);
+  let match = useMatch({ path: resolved.pathname, end: true });
+
   if (children) {
     return (
       <ListItem component="div" className="Mui-children" key={name} {...rest}>
         <Button
-          className={clsx({ 'Mui-active': menuToggle })}
+          className={clsx({ "Mui-active": menuToggle })}
           startIcon={Icon && <Icon />}
           endIcon={
             menuToggle ? <ExpandLessTwoToneIcon /> : <ExpandMoreTwoToneIcon />
@@ -55,16 +69,29 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
     );
   }
 
+  const renderLink = useMemo(
+    () =>
+      forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, "to">>(function Link(
+        itemProps,
+        ref
+      ) {
+        return (
+          <RouterLink to={link} ref={ref} {...itemProps} role={undefined} />
+        );
+      }),
+    [link]
+  );
+
   return (
     <ListItem component="div" key={name} {...rest}>
       <Button
-        className={clsx({ 'Mui-active': menuToggle })}
-        component={RouterLink} to={link}
-        onClick={toggleSidebar}
+        className={ match ? "Mui-active" : "none" }
+        component={renderLink}
+        onClick={() => toggleSidebar()}
+        // activeclassname="Mui-active"
         startIcon={Icon && <Icon />}
       >
         {name}
-        {badge && <Badge badgeContent={badge} />}
       </Button>
     </ListItem>
   );
@@ -73,11 +100,11 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
 SidebarMenuItem.propTypes = {
   children: PropTypes.node,
   active: PropTypes.bool,
-  link: PropTypes.string,
+  link: PropTypes.string.isRequired,
   icon: PropTypes.elementType,
   badge: PropTypes.string,
   open: PropTypes.bool,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
 };
 
 SidebarMenuItem.defaultProps = {
