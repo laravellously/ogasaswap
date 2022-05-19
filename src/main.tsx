@@ -2,29 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import "nprogress/nprogress.css";
 import { SidebarProvider } from "./contexts/SidebarContext";
-// import { DAppProvider, Config, Hardhat } from "@usedapp/core";
-
-
-// const config: Config = {
-//   networks: [Hardhat],
-//   readOnlyChainId: Hardhat.chainId,
-//   readOnlyUrls: {
-//     [Hardhat.chainId]: 'http://127.0.0.1:8545'
-//   },
-//   multicallAddresses: {
-//     '31337': '0x9a9f2ccfde556a7e9ff0848998aa4a0cfd8863ae'
-//   },
-//   autoConnect: true
-// };
-
 import { Provider, createClient as createWagmiClient, Chain } from 'wagmi'
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import {getDefaultProvider, providers} from "ethers";
+
+// import "nprogress/nprogress.css";
 
 const chains = [
   {

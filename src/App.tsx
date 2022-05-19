@@ -1,12 +1,10 @@
 import { Route, Routes, useRoutes } from "react-router-dom";
-// import routes from "./router";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import ThemeProvider from "./theme/ThemeProvider";
 import { CssBaseline } from "@mui/material";
 import { Suspense, lazy } from "react";
 import { Navigate, useSearchParams } from "react-router-dom";
-import { RouteObject } from "react-router";
 import { useLocalStorage } from "react-use";
 import SidebarLayout from "@/layouts/SidebarLayout";
 import SuspenseLoader from "@/components/SuspenseLoader";
@@ -36,10 +34,6 @@ const InvitePage = () => {
   return <Navigate to="/" replace />;
 };
 
-const TestPage = () => {
-  return <h1>Welcome to Test Page</h1>;
-};
-
 const App = () => {
   return (
     <ThemeProvider>
@@ -51,6 +45,7 @@ const App = () => {
             <Route path="referrals" element={<ReferralPage />} />
             <Route path="airdrop" element={<AirdropPage />} />
             <Route path="redeem" element={<RedeemAirdropPage />} />
+            <Route path="invite" element={<InvitePage />} />
           </Route>
           <Route element={<BaseLayout />}>
             <Route path="*" element={<Status404 />} />
