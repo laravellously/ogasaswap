@@ -10,8 +10,6 @@ import {
   Button,
   Container,
   Typography,
-  Alert,
-  AlertTitle,
   Dialog,
   DialogActions,
   DialogContent,
@@ -21,9 +19,6 @@ import {
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import AddTaskTwoToneIcon from '@mui/icons-material/AddTaskTwoTone';
 import { styled } from '@mui/material/styles';
-// import { AirdropContract } from '@/utils/contract'
-import { useEthers } from '@usedapp/core';
-import { parseEther } from 'ethers/lib/utils';
 import React from 'react';
 import { useNavigate } from 'react-router';
 
@@ -61,24 +56,23 @@ const RedeemPage = () => {
     setErrorMsg('')
   };
 
-  const { account } = useEthers()
   const navigate = useNavigate()
   
   const redeemFunc = async (amount: string) => {
-    if(!account) { 
-      setErrorMsg('You need to connect your wallet first.')
-      setOpen(true)
-      return;
-    }
-    const userAcc = account ? account : ''
-    try{
-      // await AirdropContract.createVestingSchedule(userAcc, Date.now(), 0, 3600, 360, false, parseEther(amount))
-      // await AirdropContract.participate(userAcc, {value: parseEther(amount)})
-      navigate('/transactions')
-    } catch(e: any) {
-      setErrorMsg("An Error Occured: "+e.message)
-      setOpen(true)
-    }
+    // if(!account) { 
+    //   setErrorMsg('You need to connect your wallet first.')
+    //   setOpen(true)
+    //   return;
+    // }
+    // const userAcc = account ? account : ''
+    // try{
+    //   // await AirdropContract.createVestingSchedule(userAcc, Date.now(), 0, 3600, 360, false, parseEther(amount))
+    //   // await AirdropContract.participate(userAcc, {value: parseEther(amount)})
+    //   navigate('/transactions')
+    // } catch(e: any) {
+    //   setErrorMsg("An Error Occured: "+e.message)
+    //   setOpen(true)
+    // }
   }
   return (
     <>
