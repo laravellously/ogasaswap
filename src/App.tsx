@@ -17,10 +17,10 @@ const Loader = (Component: any) => (props: any) =>
     </Suspense>
   );
 
-const Home = Loader(lazy(() => import('@/views/dashboards/Crypto')))
-const ReferralPage = Loader(lazy(() => import("@/views/referrals")));
-const AirdropPage = Loader(lazy(() => import("@/views/airdrop")));
-const RedeemAirdropPage = Loader(lazy(() => import("@/views/airdrop/redeem")));
+// const Home = Loader(lazy(() => import('@/views/dashboards/Crypto')))
+// const ReferralPage = Loader(lazy(() => import("@/views/referrals")));
+// const AirdropPage = Loader(lazy(() => import("@/views/airdrop")));
+// const RedeemAirdropPage = Loader(lazy(() => import("@/views/airdrop/redeem")));
 const Status404 = Loader(lazy(() => import("@/views/pages/Status/Status404")));
 const Status500 = Loader(lazy(() => import("@/views/pages/Status/Status500")));
 
@@ -34,6 +34,10 @@ const InvitePage = () => {
   return <Navigate to="/" replace />;
 };
 
+const TestPage = () => {
+  return <h1>Welcome to Test Page</h1>;
+};
+
 const App = () => {
   return (
     <ThemeProvider>
@@ -41,11 +45,10 @@ const App = () => {
         <CssBaseline />
         <Routes>
           <Route path="/" element={<SidebarLayout />}>
-            <Route index element={<Home />} />
-            <Route path="referrals" element={<ReferralPage />} />
+            <Route index element={<TestPage />} />
+            {/* <Route path="referrals" element={<ReferralPage />} />
             <Route path="airdrop" element={<AirdropPage />} />
-            <Route path="redeem" element={<RedeemAirdropPage />} />
-            <Route path="invite" element={<InvitePage />} />
+            <Route path="redeem" element={<RedeemAirdropPage />} /> */}
           </Route>
           <Route element={<BaseLayout />}>
             <Route path="*" element={<Status404 />} />
