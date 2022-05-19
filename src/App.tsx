@@ -44,7 +44,7 @@ const App = () => {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <CssBaseline />
         <Routes>
-          <Route path="/" element={<SidebarLayout />}>
+          <Route path="/" element={<BaseLayout />}>
             <Route index element={<TestPage />} />
             {/* <Route path="referrals" element={<ReferralPage />} />
             <Route path="airdrop" element={<AirdropPage />} />
