@@ -7,7 +7,7 @@ import VerifiedUserTwoToneIcon from '@mui/icons-material/VerifiedUserTwoTone';
 import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserCircleTwoTone';
 
 export interface MenuItem {
-  link?: string;
+  link: string;
   icon?: any
   badge?: string;
   items?: MenuItem[];
@@ -21,7 +21,7 @@ export interface MenuItems {
 
 const menuItems: MenuItems[] = [
   {
-    heading: '',
+    heading: 'MENU',
     items: [
       {
         name: 'Dashboard',
