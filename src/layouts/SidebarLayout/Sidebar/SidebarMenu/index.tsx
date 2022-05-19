@@ -1,5 +1,4 @@
 import { ListSubheader, List } from '@mui/material';
-import { useLocation, matchPath } from 'react-router-dom';
 import SidebarMenuItem from './item';
 import menuItems, { MenuItem } from './items';
 import { styled } from '@mui/material/styles';
@@ -125,73 +124,7 @@ const SubMenuWrapper = styled(List)(
 `
 );
 
-const renderSidebarMenuItems = ({
-  items,
-  path
-}: {
-  items: MenuItem[];
-  path: string;
-}): JSX.Element => (
-  <SubMenuWrapper>
-    {items.reduce((ev, item) => reduceChildRoutes({ ev, item, path }), [])}
-  </SubMenuWrapper>
-);
-
-const reduceChildRoutes = ({
-  ev,
-  path,
-  item
-}: {
-  ev: JSX.Element[];
-  path: string;
-  item: MenuItem;
-}): Array<JSX.Element> => {
-  const key = item.name;
-
-  const exactMatch = item.link ? !!matchPath({
-    path: item.link,
-    end: true
-  }, path) : false;
-
-  if (item.items) {
-    const partialMatch = item.link ? !!matchPath({
-      path: item.link,
-      end: false
-    }, path) : false;
-
-    ev.push(
-      <SidebarMenuItem
-        key={key}
-        active={partialMatch}
-        open={partialMatch}
-        name={item.name}
-        icon={item.icon}
-        link={item.link}
-        badge={item.badge}
-      >
-        {renderSidebarMenuItems({
-          path,
-          items: item.items
-        })}
-      </SidebarMenuItem>
-    );
-  } else {
-    ev.push(
-      <SidebarMenuItem
-        key={key}
-        active={exactMatch}
-        name={item.name}
-        link={item.link}
-        badge={item.badge}
-        icon={item.icon}
-      />
-    );
-  }
-  return ev;
-}
-
 function SidebarMenu() {
-  const location = useLocation();
   return (
     <>
       {menuItems.map((section) => (
@@ -201,10 +134,17 @@ function SidebarMenu() {
             <ListSubheader component="div" disableSticky>{section.heading}</ListSubheader>
           }
         >
-          {renderSidebarMenuItems({
-            items: section.items,
-            path: location.pathname
-          })}
+          {section.items.map((item) => (
+            <SubMenuWrapper>
+              <SidebarMenuItem
+                key={item.name}
+                name={item.name}
+                link={item.link}
+                badge={item.badge}
+                icon={item.icon}
+              />
+              </SubMenuWrapper>
+          ))}
         </MenuWrapper>
       ))}
     </>
