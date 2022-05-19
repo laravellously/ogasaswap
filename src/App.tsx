@@ -1,4 +1,4 @@
-import { Route, Routes, useRoutes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import ThemeProvider from "./theme/ThemeProvider";
@@ -6,7 +6,7 @@ import { CssBaseline } from "@mui/material";
 import { Suspense, lazy } from "react";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { useLocalStorage } from "react-use";
-import SidebarLayout from "@/layouts/SidebarLayout";
+// import SidebarLayout from "@/layouts/SidebarLayout";
 import SuspenseLoader from "@/components/SuspenseLoader";
 import BaseLayout from "@/layouts/BaseLayout";
 
