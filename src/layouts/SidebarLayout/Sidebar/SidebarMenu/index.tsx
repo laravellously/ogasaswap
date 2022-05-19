@@ -137,7 +137,7 @@ function SidebarMenu() {
           {section.items.map((item) => (
             <SubMenuWrapper>
               <SidebarMenuItem
-                key={item.name}
+                key={item.id}
                 name={item.name}
                 link={item.link}
                 badge={item.badge}
