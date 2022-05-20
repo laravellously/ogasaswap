@@ -101,7 +101,7 @@ function Logo() {
 
 
   return (
-    <LogoWrapper to="/dashboard">
+    <LogoWrapper to="/overview">
       <LogoSignWrapper>
         <LogoSign>
           <LogoSignInner />
@@ -110,9 +110,9 @@ function Logo() {
       <Hidden smDown>
         <LogoTextWrapper>
           <Tooltip title="Version 1.1.0" arrow placement="right">
-            <VersionBadge>1.1.0</VersionBadge>
+            <VersionBadge>1.1</VersionBadge>
           </Tooltip>
-          <LogoText>OGASASWAP</LogoText>
+          <LogoText>Tokyo Free White</LogoText>
         </LogoTextWrapper>
       </Hidden>
     </LogoWrapper>

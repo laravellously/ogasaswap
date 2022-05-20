@@ -6,11 +6,7 @@ export const SidebarContext = createContext<SidebarContext>(
   {} as SidebarContext
 );
 
-type Props = {
-  children: React.ReactNode
-}
-
-export const SidebarProvider: FC<Props> = ({ children }) => {
+export const SidebarProvider: FC = ({ children }) => {
   const [sidebarToggle, setSidebarToggle] = useState(false);
   const toggleSidebar = () => {
     setSidebarToggle(!sidebarToggle);

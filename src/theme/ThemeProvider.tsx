@@ -1,36 +1,27 @@
-import React, { useState } from "react";
-import { ThemeProvider } from "@mui/material";
-import { themeCreator } from "./base";
-// import { StylesProvider } from "@mui/styles";
+import React, { useState } from 'react';
+import { ThemeProvider } from '@mui/material';
+import { themeCreator } from './base';
+import { StylesProvider } from '@mui/styles';
 
 export const ThemeContext = React.createContext(
-  (themeName: string): void => {}
+  (themeName: string): void => { }
 );
 
-type Props = {
-  children: React.ReactNode
-}
-
-const ThemeProviderWrapper: React.FC<Props> = ({ children }) => {
-  const curThemeName =
-    localStorage.getItem("appTheme") ||
-    "NebulaFighterTheme" ||
-    "PureLightTheme";
+const ThemeProviderWrapper: React.FC = (props) => {
+  const curThemeName = localStorage.getItem('appTheme') || 'PureLightTheme';
   const [themeName, _setThemeName] = useState(curThemeName);
   const theme = themeCreator(themeName);
   const setThemeName = (themeName: string): void => {
-    localStorage.setItem("appTheme", themeName);
+    localStorage.setItem('appTheme', themeName);
     _setThemeName(themeName);
   };
 
   return (
-    // <StylesProvider injectFirst>
+    <StylesProvider injectFirst>
       <ThemeContext.Provider value={setThemeName}>
-        <ThemeProvider theme={theme}>
-          {children}
-        </ThemeProvider>
+        <ThemeProvider theme={theme}>{props.children}</ThemeProvider >
       </ThemeContext.Provider>
-    // </StylesProvider>
+    </StylesProvider>
   );
 };
 
