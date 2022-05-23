@@ -3,7 +3,6 @@ import { useRoutes, Navigate, useSearchParams, Route, Routes } from 'react-route
 // import routes from './router';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { useLocalStorage } from "react-use";
 import ThemeProvider from './theme/ThemeProvider';
 import { CssBaseline } from '@mui/material';
 
@@ -27,12 +26,11 @@ const Status500 = Loader(lazy(() => import("src/content/pages/Status/Status500")
 
 const InvitePage = () => {
   let [searchParams, setSearchParams] = useSearchParams();
-  const [value, setValue, remove] = useLocalStorage("ref");
   const val = searchParams.get("ref") || "";
   // Save to localStorage
   console.log("Referral Address: ", val);
   console.log(ethers.utils.isAddress(val))
-  setValue(val);
+  localStorage.setItem('ref',val)
   return <Navigate to="/" replace />;
 };
 
