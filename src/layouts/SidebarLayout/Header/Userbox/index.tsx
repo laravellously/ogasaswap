@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useRef, useState, useEffect } from 'react';
 import { NavLink } from "react-router-dom";
 import {
   Box,
@@ -60,35 +60,8 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
-  );
-
-  const handleAnchorClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleAnchorClose = () => {
-    setAnchorEl(null);
-  };
-  const [isOpen, setOpen] = React.useState<boolean>(false);
-  const [activateError, setActivateError] = React.useState("");
-  const [openSnack, setSnackOpen] = React.useState(false);
-
-  const { data: account } = useAccount();
-  const { connect, connectors, isConnected, error } = useConnect();
-  const { disconnect } = useDisconnect();
-  const { activeChain, chains, switchNetwork } = useNetwork();
-
-  React.useEffect(() => {
-    if (error) {
-      setActivateError(error.message);
-      setSnackOpen(true);
-    }
-  }, [error]);
-
-  if (isConnected && activeChain?.unsupported && switchNetwork)
-    switchNetwork(chains[1].id);
+  const ref = useRef<any>(null);
+  const [isOpen, setOpen] = useState<boolean>(false);
 
   const handleOpen = (): void => {
     setOpen(true);
@@ -98,12 +71,27 @@ function HeaderUserbox() {
     setOpen(false);
   };
 
+  const [activateError, setActivateError] = useState("");
+  const [openSnack, setSnackOpen] = useState(false);
+
+  const { data: account } = useAccount();
+  const { connect, connectors, isConnected, error } = useConnect();
+  const { disconnect } = useDisconnect();
+  const { activeChain, chains, switchNetwork } = useNetwork();
+
+  useEffect(() => {
+    if (error) {
+      setActivateError(error.message);
+      setSnackOpen(true);
+    }
+  }, [error]);
+
+  if (isConnected && activeChain?.unsupported && switchNetwork)
+    switchNetwork(chains[1].id);
+
   const handleSnackClose = (): void => {
     setSnackOpen(false);
   };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
   return (
     <>
@@ -124,7 +112,6 @@ function HeaderUserbox() {
               setActivateError("");
               connect(connectors[0]);
             }}
-            startIcon={<AccountBalanceWalletTwoToneIcon />}
           >
             Connect Wallet
           </Button>
@@ -132,7 +119,7 @@ function HeaderUserbox() {
       )}
       {isConnected && (
         <>
-          <UserBoxButton color="secondary" onClick={handleAnchorClick}>
+          <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
             <Jazzicon diameter={40} seed={addressToSeed(account?.address)} />
             <Hidden mdDown>
               <UserBoxText>
@@ -147,10 +134,9 @@ function HeaderUserbox() {
             </Hidden>
           </UserBoxButton>
           <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleAnchorClose}
+            anchorEl={ref.current}
+            onClose={handleClose}
+            open={isOpen}
             anchorOrigin={{
               vertical: "top",
               horizontal: "right",

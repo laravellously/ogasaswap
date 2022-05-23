@@ -63,7 +63,7 @@ function Status404() {
           </Box>
           <Container maxWidth="sm">
             <Card sx={{ textAlign: 'center', mt: 3, p: 4 }}>
-              <FormControl variant="outlined" fullWidth>
+              {/* <FormControl variant="outlined" fullWidth>
                 <OutlinedInputWrapper
                   type="text"
                   placeholder="Search terms here..."
@@ -80,9 +80,9 @@ function Status404() {
                     </InputAdornment>
                   }
                 />
-              </FormControl>
+              </FormControl> */}
               <Divider sx={{ my: 4 }}>OR</Divider>
-              <Button href="/overview" variant="outlined">
+              <Button href="/" variant="outlined">
                 Go to homepage
               </Button>
             </Card>

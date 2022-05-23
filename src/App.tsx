@@ -19,6 +19,9 @@ const Loader = (Component) => (props) => (
   </Suspense>
 );
 
+const ReferralPage = Loader(lazy(() => import("src/content/pages/Referral")));
+const AirdropPage = Loader(lazy(() => import("src/content/pages/Airdrop")));
+const RedeemAirdropPage = Loader(lazy(() => import("src/content/pages/Airdrop/redeem")));
 const Status404 = Loader(lazy(() => import("src/content/pages/Status/Status404")));
 const Status500 = Loader(lazy(() => import("src/content/pages/Status/Status500")));
 
@@ -39,9 +42,6 @@ const TestPage = () => {
 
 
 const App = () => {
-
-  // const content = useRoutes(routes);
-
   return (
     <ThemeProvider>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -49,9 +49,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<SidebarLayout />}>
             <Route index element={<TestPage />} />
-            {/* <Route path="referrals" element={<ReferralPage />} /> */}
-            {/* <Route path="airdrop" element={<AirdropPage />} /> */}
-            {/* <Route path="redeem" element={<RedeemAirdropPage />} /> */}
+            <Route path="referrals" element={<ReferralPage />} />
+            <Route path="airdrop" element={<AirdropPage />} />
+            <Route path="redeem" element={<RedeemAirdropPage />} />
             <Route path="invite" element={<InvitePage />} />
           </Route>
           <Route element={<BaseLayout />}>
