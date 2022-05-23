@@ -101,7 +101,7 @@ function Logo() {
 
 
   return (
-    <LogoWrapper to="/overview">
+    <LogoWrapper to="/">
       <LogoSignWrapper>
         <LogoSign>
           <LogoSignInner />
@@ -112,7 +112,7 @@ function Logo() {
           <Tooltip title="Version 1.1.0" arrow placement="right">
             <VersionBadge>1.1</VersionBadge>
           </Tooltip>
-          <LogoText>Tokyo Free White</LogoText>
+          <LogoText>OGASASWAP</LogoText>
         </LogoTextWrapper>
       </Hidden>
     </LogoWrapper>
