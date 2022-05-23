@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -7,10 +7,8 @@ import {
   ListItem,
   List,
   ListItemText,
-  Divider,
   ListItemAvatar,
   Avatar,
-  CardHeader,
   Tooltip,
   IconButton,
   Table,
@@ -22,17 +20,18 @@ import {
   useTheme,
   Snackbar,
   Container,
-  Button,
-  CardContent
+  Button
 } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { styled } from '@mui/material/styles';
 import LinkTwoToneIcon from '@mui/icons-material/LinkTwoTone';
 import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone';
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
+import { ethers } from 'ethers';
 import { useConnect, useAccount } from 'wagmi';
 import useCopyToClipboard from 'src/hooks/useCopyToClipboard';
-import { TokenContract } from 'src/utils/contract';
-
+import { CrowdsaleContract } from 'src/utils/contract';
+import useReferrals from 'src/hooks/useReferrals';
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -49,7 +48,9 @@ const ReferralCard = () => {
   const { data: account } = useAccount();
 
   const handleClick = () => {
-    copyToClipboard('https://ogasaswap.vercel.app/invite?ref=' + account.address)
+    copyToClipboard(
+      'https://ogasaswap.vercel.app/invite?ref=' + account.address
+    );
     setOpen(true);
   };
 
@@ -119,15 +120,17 @@ const ReferralCard = () => {
                     size="small"
                     color="primary"
                     startIcon={<ContentCopyTwoToneIcon />}
-                    onClick={async () => {
-                      console.log(await TokenContract.decimals())
-                    }}
+                    onClick={handleClick}
                   >
                     Copy
                   </Button>
 
                   <Snackbar
                     open={open}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center'
+                    }}
                     autoHideDuration={6000}
                     onClose={handleClose}
                     message="Copied to clipboard"
@@ -143,15 +146,91 @@ const ReferralCard = () => {
 };
 
 const ReferralTable = () => {
+  const { data: account } = useAccount();
   const theme = useTheme();
+  const [tableData, getTableData] = useReferrals();
 
-  return <></>;
+  return (
+    <Card>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Transaction Hash</TableCell>
+              <TableCell>Amount</TableCell>
+              <TableCell align="right">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {!tableData && (
+              <TableRow hover>
+                <Typography
+                variant="body1"
+                fontWeight="bold"
+                color="text.primary"
+                gutterBottom
+                noWrap
+              >
+                No data to show
+              </Typography>
+              </TableRow>
+            )}
+            {tableData &&
+              tableData.map((data) => {
+                return (
+                  <TableRow hover key={data.transactionHash}>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      >
+                        {data.transactionHash}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      >
+                        {ethers.utils.formatEther(data.args[1].toString())}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Tooltip title="View on BscScan" arrow>
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.primary.lighter
+                            },
+                            color: theme.palette.primary.main
+                          }}
+                          color="inherit"
+                          size="small"
+                        >
+                          <VisibilityTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Card>
+  );
 };
 
 const ReferralPage = () => {
   return (
     <>
-    <Helmet>
+      <Helmet>
         <title>Referrals - Ogasaswap</title>
       </Helmet>
       <Container sx={{ my: 3 }} maxWidth="lg">
