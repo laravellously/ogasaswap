@@ -31,6 +31,7 @@ import LinkTwoToneIcon from '@mui/icons-material/LinkTwoTone';
 import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone';
 import { useConnect, useAccount } from 'wagmi';
 import useCopyToClipboard from 'src/hooks/useCopyToClipboard';
+import { TokenContract } from 'src/utils/contract';
 
 
 const AvatarSuccess = styled(Avatar)(
@@ -48,7 +49,7 @@ const ReferralCard = () => {
   const { data: account } = useAccount();
 
   const handleClick = () => {
-    copyToClipboard('https://sales.ogasaswap.com/invite?ref=' + account.address)
+    copyToClipboard('https://ogasaswap.vercel.app/invite?ref=' + account.address)
     setOpen(true);
   };
 
@@ -94,7 +95,7 @@ const ReferralCard = () => {
                     lineHeight: 1
                   }}
                   primary="Referral Link"
-                  secondary="Connect Wallet to view referral link"
+                  secondary="Connect wallet to view your referral link"
                 />
               </>
             )}
@@ -108,7 +109,7 @@ const ReferralCard = () => {
                   }}
                   primary="Referral Link"
                   secondary={
-                    'https://sales.ogasaswap.com/invite?ref=' + account.address
+                    'https://ogasaswap.vercel.app/invite?ref=' + account.address
                   }
                 />
                 <Box pl={1} component="span">
@@ -118,7 +119,9 @@ const ReferralCard = () => {
                     size="small"
                     color="primary"
                     startIcon={<ContentCopyTwoToneIcon />}
-                    onClick={handleClick}
+                    onClick={async () => {
+                      console.log(await TokenContract.decimals())
+                    }}
                   >
                     Copy
                   </Button>

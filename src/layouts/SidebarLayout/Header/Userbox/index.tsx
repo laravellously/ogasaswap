@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -11,18 +11,18 @@ import {
   ListItemText,
   Popover,
   Snackbar,
-  Typography,
-} from "@mui/material";
-import Jazzicon from "react-jazzicon";
-import VerifiedUserTwoToneIcon from "@mui/icons-material/VerifiedUserTwoTone";
-import { styled } from "@mui/material/styles";
-import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
-import LockOpenTwoToneIcon from "@mui/icons-material/LockOpenTwoTone";
-import AccountTreeTwoToneIcon from "@mui/icons-material/AccountTreeTwoTone";
-import AccountBalanceWalletTwoToneIcon from "@mui/icons-material/AccountBalanceWalletTwoTone";
+  Typography
+} from '@mui/material';
+import Jazzicon from 'react-jazzicon';
+import VerifiedUserTwoToneIcon from '@mui/icons-material/VerifiedUserTwoTone';
+import { styled } from '@mui/material/styles';
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
+import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
+import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
 
-import { useAccount, useConnect, useDisconnect, useNetwork } from "wagmi";
-import { addressToSeed, shortenString } from "src/utils/common";
+import { useAccount, useConnect, useDisconnect, useNetwork } from 'wagmi';
+import { addressToSeed, shortenString } from 'src/utils/common';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -71,13 +71,20 @@ function HeaderUserbox() {
     setOpen(false);
   };
 
-  const [activateError, setActivateError] = useState("");
+  const [activateError, setActivateError] = useState('');
   const [openSnack, setSnackOpen] = useState(false);
 
   const { data: account } = useAccount();
   const { connect, connectors, isConnected, error } = useConnect();
   const { disconnect } = useDisconnect();
-  const { activeChain, chains, switchNetwork } = useNetwork();
+  const {
+    activeChain,
+    chains,
+    isLoading,
+    pendingChainId,
+    switchNetwork,
+    error: networkError
+  } = useNetwork();
 
   useEffect(() => {
     if (error) {
@@ -86,8 +93,18 @@ function HeaderUserbox() {
     }
   }, [error]);
 
-  if (isConnected && activeChain?.unsupported && switchNetwork)
-    switchNetwork(chains[1].id);
+  useEffect(() => {
+    if (networkError) {
+      disconnect();
+      setActivateError(networkError.message);
+      setSnackOpen(true);
+    }
+  }, [networkError]);
+
+  useEffect(() => {
+    if (isConnected && activeChain?.unsupported && switchNetwork)
+      switchNetwork(chains[1].id);
+  }, [isConnected, activeChain]);
 
   const handleSnackClose = (): void => {
     setSnackOpen(false);
@@ -97,6 +114,10 @@ function HeaderUserbox() {
     <>
       <Snackbar
         open={openSnack}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center'
+        }}
         autoHideDuration={4000}
         onClose={handleSnackClose}
         message={activateError}
@@ -109,7 +130,7 @@ function HeaderUserbox() {
             size="large"
             color="primary"
             onClick={() => {
-              setActivateError("");
+              setActivateError('');
               connect(connectors[0]);
             }}
           >
@@ -123,7 +144,12 @@ function HeaderUserbox() {
             <Jazzicon diameter={40} seed={addressToSeed(account?.address)} />
             <Hidden mdDown>
               <UserBoxText>
-                <UserBoxLabel variant="body1">Connected</UserBoxLabel>
+                {isLoading && pendingChainId === 97 && (
+                  <UserBoxLabel variant="body1">Switching</UserBoxLabel>
+                )}
+                {!isLoading && (
+                  <UserBoxLabel variant="body1">Connected</UserBoxLabel>
+                )}
                 <UserBoxDescription variant="body2">
                   {shortenString(account?.address)}
                 </UserBoxDescription>
@@ -138,12 +164,12 @@ function HeaderUserbox() {
             onClose={handleClose}
             open={isOpen}
             anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
+              vertical: 'top',
+              horizontal: 'right'
             }}
             transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
+              vertical: 'top',
+              horizontal: 'right'
             }}
           >
             <MenuUserBox sx={{ minWidth: 210 }} display="flex">

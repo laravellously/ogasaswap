@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
-import ShareTwoToneIcon from "@mui/icons-material/ShareTwoTone";
+import { Button } from '@mui/material';
+import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone';
 
 function windowOpen(
   url: string,
@@ -13,24 +13,24 @@ function windowOpen(
   const config: { [key: string]: string | number } = {
     height,
     width,
-    location: "no",
-    toolbar: "no",
-    status: "no",
-    directories: "no",
-    menubar: "no",
-    scrollbars: "yes",
-    resizable: "no",
-    centerscreen: "yes",
-    chrome: "yes",
-    ...configRest,
+    location: 'no',
+    toolbar: 'no',
+    status: 'no',
+    directories: 'no',
+    menubar: 'no',
+    scrollbars: 'yes',
+    resizable: 'no',
+    centerscreen: 'yes',
+    chrome: 'yes',
+    ...configRest
   };
 
   const shareDialog = window.open(
     url,
-    "",
+    '',
     Object.keys(config)
       .map((key) => `${key}=${config[key]}`)
-      .join(", ")
+      .join(', ')
   );
 
   if (onClose) {
@@ -61,29 +61,31 @@ function objectToGetParams(object: {
         `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`
     );
 
-  return params.length > 0 ? `?${params.join("&")}` : "";
+  return params.length > 0 ? `?${params.join('&')}` : '';
 }
 
 export const ShareButton = () => {
   const link =
-  "https://twitter.com/share" +
-  objectToGetParams({
-    url: "https://ogasaswap.com",
-    title: "Ogasaswap",
-    hashtags: "ogasaswap",
-  });
+    'https://twitter.com/intent/tweet' +
+    objectToGetParams({
+      url: 'https://ogasaswap.com',
+      via: 'ogasaswap',
+      text:
+        'Participate in the $OGASA airdrop and earn rewards. Be a part of the FIRST Cross-chain DEX Platform in Africa.',
+      hashtags: 'ogasaswap,crypto'
+    });
 
   const windowConfig = {
     height: 400,
     width: 550,
     left:
-    window.outerWidth / 2 +
-    (window.screenX || window.screenLeft || 0) -
-    550 / 2,
-  top:
-    window.outerHeight / 2 +
-    (window.screenY || window.screenTop || 0) -
-    400 / 2
+      window.outerWidth / 2 +
+      (window.screenX || window.screenLeft || 0) -
+      550 / 2,
+    top:
+      window.outerHeight / 2 +
+      (window.screenY || window.screenTop || 0) -
+      400 / 2
   };
 
   return (

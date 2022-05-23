@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import {
   Card,
   Grid,
@@ -19,8 +21,9 @@ import {
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import AddTaskTwoToneIcon from '@mui/icons-material/AddTaskTwoTone';
 import { styled } from '@mui/material/styles';
-import { useNavigate } from 'react-router';
-import { useState } from 'react';
+import { ethers } from 'ethers'
+import { OgasaDropContract } from 'src/utils/contract';
+import { useAccount } from 'wagmi';
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -50,29 +53,28 @@ function PageHeader() {
 const RedeemPage = () => {
   const [open, setOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState('')
+  const { data: account} = useAccount()
 
   const handleClose = () => {
     setOpen(false);
     setErrorMsg('')
   };
-
-  const navigate = useNavigate()
   
   const redeemFunc = async (amount: string) => {
-    // if(!account) { 
-    //   setErrorMsg('You need to connect your wallet first.')
-    //   setOpen(true)
-    //   return;
-    // }
-    // const userAcc = account ? account : ''
-    // try{
-    //   // await AirdropContract.createVestingSchedule(userAcc, Date.now(), 0, 3600, 360, false, parseEther(amount))
-    //   // await AirdropContract.participate(userAcc, {value: parseEther(amount)})
-    //   navigate('/transactions')
-    // } catch(e: any) {
-    //   setErrorMsg("An Error Occured: "+e.message)
-    //   setOpen(true)
-    // }
+    if(!account) { 
+      setErrorMsg('You need to connect your wallet first.')
+      setOpen(true)
+      return;
+    }
+    const userAcc = account ? account.address : ''
+    try{
+      await OgasaDropContract.participate(userAcc, {value: ethers.utils.parseEther(amount)})
+      setErrorMsg("Thank you for participating in our airdrop. You can purchase more tokens using our crowdsale")
+      setOpen(true)
+    } catch(e: any) {
+      setErrorMsg("An Error Occured: "+e.message)
+      setOpen(true)
+    }
   }
   return (
     <>
@@ -83,7 +85,7 @@ const RedeemPage = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Error"}
+          {"Notification"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -99,7 +101,7 @@ const RedeemPage = () => {
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
-      <Container sx={{ my: 3 }} maxWidth="lg">
+      <Container sx={{ mb: 3 }} maxWidth="lg">
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Card>
