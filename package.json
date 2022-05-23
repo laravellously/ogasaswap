@@ -33,6 +33,7 @@
     "react-scripts": "5.0.1",
     "stylis": "4.1.1",
     "react-chartjs-2": "2.11.1",
+    "util": "^0.12.4",
     "wagmi": "^0.3.5",
     "web-vitals": "2.1.4"
   },
