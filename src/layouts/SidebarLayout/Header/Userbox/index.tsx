@@ -83,7 +83,7 @@ const WalletDialogTitle = (props: DialogTitleProps) => {
             position: 'absolute',
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500],
+            color: (theme) => theme.palette.grey[500]
           }}
         >
           <CloseIcon />
@@ -133,7 +133,7 @@ function HeaderUserbox() {
   useEffect(() => {
     if (error) {
       setActivateError(error.message);
-      setDialogOpen(false)
+      setDialogOpen(false);
       setSnackOpen(true);
     }
   }, [error]);
@@ -142,7 +142,7 @@ function HeaderUserbox() {
     if (networkError) {
       disconnect();
       setActivateError(networkError.message);
-      setDialogOpen(false)
+      setDialogOpen(false);
       setSnackOpen(true);
     }
   }, [networkError]);
@@ -188,21 +188,29 @@ function HeaderUserbox() {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <WalletDialogTitle id="alert-dialog-title" onClose={handleDialogClose}>
+            <WalletDialogTitle
+              id="alert-dialog-title"
+              onClose={handleDialogClose}
+            >
               {'Connect Wallet'}
             </WalletDialogTitle>
             {connectors.map((x) => (
               <ListItem
                 button
-                disabled={!x.ready || isConnecting}
+                disabled={!x.ready}
                 key={x.id}
                 onClick={() => connect(x)}
                 sx={{ p: 2 }}
               >
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                    <PersonIcon />
-                  </Avatar>
+                  <Avatar
+                    sx={{ bgcolor: blue[100], color: blue[600] }}
+                    src={x.id == 'coinbaseWallet'
+                    ? '/static/providers/logos/coinbasewallet.svg'
+                    : x.id == 'metaMask'
+                    ? '/static/providers/logos/metamask.svg'
+                    : '/static/providers/logos/walletconnect.svg'}
+                  ></Avatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={

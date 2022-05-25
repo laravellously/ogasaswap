@@ -1,4 +1,4 @@
-import { Box, Hidden, Tooltip } from '@mui/material';
+import { Avatar, Box, Hidden, Tooltip } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
@@ -103,15 +103,10 @@ function Logo() {
   return (
     <LogoWrapper to="/">
       <LogoSignWrapper>
-        <LogoSign>
-          <LogoSignInner />
-        </LogoSign>
+        <Avatar src="/ogasa.png"></Avatar>
       </LogoSignWrapper>
       <Hidden smDown>
         <LogoTextWrapper>
-          <Tooltip title="Version 1.1.0" arrow placement="right">
-            <VersionBadge>1.1</VersionBadge>
-          </Tooltip>
           <LogoText>OGASASWAP</LogoText>
         </LogoTextWrapper>
       </Hidden>
