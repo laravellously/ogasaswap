@@ -133,6 +133,7 @@ function HeaderUserbox() {
   useEffect(() => {
     if (error) {
       setActivateError(error.message);
+      setDialogOpen(false)
       setSnackOpen(true);
     }
   }, [error]);
@@ -141,6 +142,7 @@ function HeaderUserbox() {
     if (networkError) {
       disconnect();
       setActivateError(networkError.message);
+      setDialogOpen(false)
       setSnackOpen(true);
     }
   }, [networkError]);

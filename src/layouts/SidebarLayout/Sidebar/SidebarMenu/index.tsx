@@ -1,9 +1,11 @@
-import { ListSubheader, List } from '@mui/material';
+import { ListSubheader, List, ListItem, Link } from '@mui/material';
 import { useLocation, matchPath } from 'react-router-dom';
 import SidebarMenuItem from './item';
 import menuItems, { MenuItem } from './items';
 import { styled } from '@mui/material/styles';
-
+import ThumbUpTwoToneIcon from '@mui/icons-material/ThumbUpTwoTone';
+import ChatTwoToneIcon from '@mui/icons-material/ChatTwoTone';
+import LanguageTwoToneIcon from '@mui/icons-material/LanguageTwoTone';
 
 const MenuWrapper = styled(List)(
   ({ theme }) => `
@@ -148,16 +150,26 @@ const reduceChildRoutes = ({
 }): Array<JSX.Element> => {
   const key = item.name;
 
-  const exactMatch = item.link ? !!matchPath({
-    path: item.link,
-    end: true
-  }, path) : false;
+  const exactMatch = item.link
+    ? !!matchPath(
+        {
+          path: item.link,
+          end: true
+        },
+        path
+      )
+    : false;
 
   if (item.items) {
-    const partialMatch = item.link ? !!matchPath({
-      path: item.link,
-      end: false
-    }, path) : false;
+    const partialMatch = item.link
+      ? !!matchPath(
+          {
+            path: item.link,
+            end: false
+          },
+          path
+        )
+      : false;
 
     ev.push(
       <SidebarMenuItem
@@ -189,19 +201,19 @@ const reduceChildRoutes = ({
   }
 
   return ev;
-}
+};
 
 function SidebarMenu() {
   const location = useLocation();
-
-
   return (
     <>
       {menuItems.map((section) => (
         <MenuWrapper
           key={section.heading}
           subheader={
-            <ListSubheader component="div" disableSticky>{section.heading}</ListSubheader>
+            <ListSubheader component="div" disableSticky>
+              {section.heading}
+            </ListSubheader>
           }
         >
           {renderSidebarMenuItems({
@@ -210,6 +222,19 @@ function SidebarMenu() {
           })}
         </MenuWrapper>
       ))}
+      <MenuWrapper
+        subheader={
+          <ListSubheader component="div" disableSticky>
+            {'LINKS'}
+          </ListSubheader>
+        }
+      >
+        <ListItem component="div">
+          <Link component="button" variant="body2" href="https://twitter.com">
+            Twitter
+          </Link>
+        </ListItem>
+      </MenuWrapper>
     </>
   );
 }
