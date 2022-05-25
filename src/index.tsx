@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
-import { WagmiConfig, createClient as createWagmiClient } from 'wagmi';
+import { WagmiConfig, createClient as createWagmiClient, Chain } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
@@ -12,7 +12,7 @@ import { getDefaultProvider, providers } from 'ethers';
 import 'nprogress/nprogress.css';
 import { SidebarProvider } from './contexts/SidebarContext';
 
-const chains = [
+const chains: Chain[] = [
   {
     id: 56,
     name: 'Binance Smart Chain',
@@ -59,7 +59,8 @@ const chains = [
         name: 'BNB Testnet Chain Explorer',
         url: 'https://testnet.bscscan.com'
       }
-    }
+    },
+    testnet: true
   }
 ];
 
