@@ -15,7 +15,16 @@
     <script>
       window.global = window;
     </script>
-    <title>Ogasaswap</title>
+    <script type="module">
+      import process from "process";
+      import { Buffer } from "buffer";
+      import EventEmitter from "events";
+      
+      window.process = process;
+      window.Buffer = Buffer;
+      window.EventEmitter = EventEmitter;
+    </script>
+    <title>Ogasa Airdrop</title>
   </head>
 
   <body>
