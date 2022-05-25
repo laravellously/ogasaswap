@@ -81,13 +81,6 @@ const coinbaseWalletConnector = ({
     }
   });
 
-// const injectedConnector = new InjectedConnector({
-//   chains,
-//   options: {
-//     shimDisconnect: true
-//   }
-// });
-
 const metaMaskConnector = new MetaMaskConnector({
   chains,
   options: {

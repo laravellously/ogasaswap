@@ -1,4 +1,4 @@
-import { ListSubheader, List, ListItem, Link } from '@mui/material';
+import { ListSubheader, List, ListItem, Link, Button } from '@mui/material';
 import { useLocation, matchPath } from 'react-router-dom';
 import SidebarMenuItem from './item';
 import menuItems, { MenuItem } from './items';
@@ -230,9 +230,19 @@ function SidebarMenu() {
         }
       >
         <ListItem component="div">
-          <Link component="button" variant="body2" href="https://twitter.com">
+          <Button href={'https://twitter.com'} target="_blank" startIcon={<ChatTwoToneIcon />}>
             Twitter
-          </Link>
+          </Button>
+        </ListItem>
+        <ListItem component="div">
+          <Button href={'https://telegram.com'} target="_blank" startIcon={<ThumbUpTwoToneIcon />}>
+            Telegram
+          </Button>
+        </ListItem>
+        <ListItem component="div">
+          <Button href={'https://ogasaswap.com'} target="_blank" startIcon={<LanguageTwoToneIcon />}>
+            Website
+          </Button>
         </ListItem>
       </MenuWrapper>
     </>
