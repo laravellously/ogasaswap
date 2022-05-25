@@ -5,12 +5,10 @@ import {
   Box,
   Button,
   Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
   Hidden,
+  IconButton,
   lighten,
   List,
   ListItem,
@@ -21,12 +19,10 @@ import {
   Typography
 } from '@mui/material';
 import Jazzicon from 'react-jazzicon';
-import VerifiedUserTwoToneIcon from '@mui/icons-material/VerifiedUserTwoTone';
 import { styled } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
-// import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
 import PersonIcon from '@mui/icons-material/Person';
 import { useAccount, useConnect, useDisconnect, useNetwork } from 'wagmi';
 import { addressToSeed, shortenString } from 'src/utils/common';
@@ -67,6 +63,36 @@ const UserBoxDescription = styled(Typography)(
 `
 );
 
+interface DialogTitleProps {
+  id: string;
+  children?: React.ReactNode;
+  onClose: () => void;
+}
+
+const WalletDialogTitle = (props: DialogTitleProps) => {
+  const { children, onClose, ...other } = props;
+
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+};
+
 function HeaderUserbox() {
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -86,7 +112,6 @@ function HeaderUserbox() {
   const { disconnect } = useDisconnect();
   const {
     activeChain,
-    chains,
     isLoading,
     pendingChainId,
     switchNetwork,
@@ -121,9 +146,8 @@ function HeaderUserbox() {
   }, [networkError]);
 
   useEffect(() => {
-    if (isConnected && activeChain?.unsupported && switchNetwork) {
-    }
-    switchNetwork(97);
+    if (isConnected && activeChain?.unsupported && switchNetwork)
+      switchNetwork(97);
   }, [isConnected, activeChain]);
 
   const handleSnackClose = (): void => {
@@ -152,7 +176,6 @@ function HeaderUserbox() {
             onClick={() => {
               setActivateError('');
               setDialogOpen(true);
-              // connect(connectors[0]);
             }}
           >
             Connect Wallet
@@ -163,15 +186,16 @@ function HeaderUserbox() {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">
+            <WalletDialogTitle id="alert-dialog-title" onClose={handleDialogClose}>
               {'Connect Wallet'}
-            </DialogTitle>
+            </WalletDialogTitle>
             {connectors.map((x) => (
               <ListItem
                 button
-                disabled={!x.ready}
+                disabled={!x.ready || isConnecting}
                 key={x.id}
                 onClick={() => connect(x)}
+                sx={{ p: 2 }}
               >
                 <ListItemAvatar>
                   <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
@@ -179,7 +203,11 @@ function HeaderUserbox() {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={x.name}
+                  primary={
+                    <Typography gutterBottom variant="h4" component="div">
+                      {x.name}
+                    </Typography>
+                  }
                   secondary={
                     isConnecting &&
                     pendingConnector?.id === x.id &&
@@ -236,14 +264,6 @@ function HeaderUserbox() {
             </MenuUserBox>
             <Divider sx={{ mb: 0 }} />
             <List sx={{ p: 1 }} component="nav">
-              <ListItem button to="/contribute" component={NavLink}>
-                <VerifiedUserTwoToneIcon fontSize="small" />
-                <ListItemText primary="Purchase Token" />
-              </ListItem>
-              <ListItem button to="/referrals" component={NavLink}>
-                <AccountTreeTwoToneIcon fontSize="small" />
-                <ListItemText primary="Referrals" />
-              </ListItem>
               <ListItem button onClick={() => disconnect()}>
                 <LockOpenTwoToneIcon fontSize="small" />
                 <ListItemText primary="Disconnect Wallet" />
