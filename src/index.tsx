@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
-import { Provider, createClient as createWagmiClient } from 'wagmi';
+import { WagmiConfig, createClient as createWagmiClient } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { getDefaultProvider, providers } from 'ethers';
@@ -83,6 +84,13 @@ export const injectedConnector = new InjectedConnector({
   }
 });
 
+const metaMaskConnector = new MetaMaskConnector({
+  chains,
+  options: {
+    shimDisconnect: true,
+  },
+})
+
 export const walletConnectConnector = ({
   chainId
 }: {
@@ -99,6 +107,7 @@ export const walletConnectConnector = ({
 const connectors = (config: { chainId?: number | undefined }) => {
   return [
     injectedConnector,
+    metaMaskConnector,
     coinbaseWalletConnector(config),
     walletConnectConnector(config)
   ];
@@ -123,9 +132,9 @@ ReactDOM.render(
   <HelmetProvider>
     <SidebarProvider>
       <BrowserRouter>
-        <Provider client={client}>
+        <WagmiConfig client={client}>
           <App />
-        </Provider>
+        </WagmiConfig>
       </BrowserRouter>
     </SidebarProvider>
   </HelmetProvider>,
