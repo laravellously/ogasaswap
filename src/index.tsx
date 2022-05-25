@@ -5,7 +5,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import { WagmiConfig, createClient as createWagmiClient, Chain } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { getDefaultProvider, providers } from 'ethers';
@@ -16,6 +16,7 @@ const chains: Chain[] = [
   {
     id: 56,
     name: 'Binance Smart Chain',
+    network: 'bsc',
     nativeCurrency: {
       name: 'BNB',
       symbol: 'BNB',
@@ -35,11 +36,13 @@ const chains: Chain[] = [
         name: 'BNB Smart Chain Explorer',
         url: 'https://bscscan.com'
       }
-    }
+    },
+    testnet: false
   },
   {
     id: 97,
     name: 'Binance Testnet Chain',
+    network: 'bsctestnet',
     nativeCurrency: {
       name: 'BNB',
       symbol: 'BNB',
@@ -64,7 +67,7 @@ const chains: Chain[] = [
   }
 ];
 
-export const coinbaseWalletConnector = ({
+const coinbaseWalletConnector = ({
   chainId
 }: {
   chainId?: number | undefined;
@@ -78,21 +81,21 @@ export const coinbaseWalletConnector = ({
     }
   });
 
-export const injectedConnector = new InjectedConnector({
+// const injectedConnector = new InjectedConnector({
+//   chains,
+//   options: {
+//     shimDisconnect: true
+//   }
+// });
+
+const metaMaskConnector = new MetaMaskConnector({
   chains,
   options: {
     shimDisconnect: true
   }
 });
 
-const metaMaskConnector = new MetaMaskConnector({
-  chains,
-  options: {
-    shimDisconnect: true,
-  },
-})
-
-export const walletConnectConnector = ({
+const walletConnectConnector = ({
   chainId
 }: {
   chainId?: number | undefined;
@@ -107,9 +110,9 @@ export const walletConnectConnector = ({
 
 const connectors = (config: { chainId?: number | undefined }) => {
   return [
-    injectedConnector,
-    metaMaskConnector,
+    // injectedConnector,
     coinbaseWalletConnector(config),
+    metaMaskConnector,
     walletConnectConnector(config)
   ];
 };

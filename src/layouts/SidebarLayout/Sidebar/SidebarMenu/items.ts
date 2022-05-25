@@ -27,25 +27,25 @@ const menuItems: MenuItems[] = [
     heading: 'MENU',
     items: [
       {
-        name: 'Dashboard',
-        link: '/',
-        icon: DashboardTwoToneIcon
-      },
-      {
-        name: 'Buy Token',
-        link: '/contribute',
-        icon: WidgetsTwoToneIcon
-      },
-      {
-        name: 'Referrals',
-        link: '/referrals',
-        icon: SupervisedUserCircleTwoToneIcon
-      },
-      {
         name: 'Airdrop',
-        link: '/airdrop',
+        link: '/',
         icon: RedeemTwoToneIcon
       }
+      // {
+      //   name: 'Buy Token',
+      //   link: '/contribute',
+      //   icon: WidgetsTwoToneIcon
+      // },
+      // {
+      //   name: 'Referrals',
+      //   link: '/referrals',
+      //   icon: SupervisedUserCircleTwoToneIcon
+      // },
+      // {
+      //   name: 'Airdrop',
+      //   link: '/airdrop',
+      //   icon: RedeemTwoToneIcon
+      // }
     ]
   },
   {
