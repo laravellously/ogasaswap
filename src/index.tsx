@@ -106,12 +106,12 @@ const connectors = (config: { chainId?: number | undefined }) => {
 };
 
 const provider = ({ chainId }: { chainId?: number | undefined }): any => {
-  if (!chainId) return getDefaultProvider();
-  const jsonRpcProvider = new providers.JsonRpcProvider(
-    'https://data-seed-prebsc-2-s2.binance.org:8545/',
-    chainId
-  );
-  return jsonRpcProvider;
+  return getDefaultProvider();
+  // const jsonRpcProvider = new providers.JsonRpcProvider(
+  //   'https://data-seed-prebsc-2-s2.binance.org:8545/',
+  //   chainId
+  // );
+  // return jsonRpcProvider;
 };
 
 const client = createWagmiClient({

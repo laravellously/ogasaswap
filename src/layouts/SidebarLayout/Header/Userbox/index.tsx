@@ -1,13 +1,20 @@
 import { useRef, useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
+  Avatar,
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Hidden,
   lighten,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemText,
   Popover,
   Snackbar,
@@ -19,10 +26,11 @@ import { styled } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
-import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
-
+// import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
+import PersonIcon from '@mui/icons-material/Person';
 import { useAccount, useConnect, useDisconnect, useNetwork } from 'wagmi';
 import { addressToSeed, shortenString } from 'src/utils/common';
+import { blue } from '@mui/material/colors';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -62,20 +70,19 @@ const UserBoxDescription = styled(Typography)(
 function HeaderUserbox() {
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
-
-  const handleOpen = (): void => {
-    setOpen(true);
-  };
-
-  const handleClose = (): void => {
-    setOpen(false);
-  };
-
+  const [isDialogOpen, setDialogOpen] = useState<boolean>(false);
   const [activateError, setActivateError] = useState('');
   const [openSnack, setSnackOpen] = useState(false);
 
   const { data: account } = useAccount();
-  const { connect, connectors, isConnected, error } = useConnect();
+  const {
+    connect,
+    connectors,
+    isConnected,
+    error,
+    isConnecting,
+    pendingConnector
+  } = useConnect();
   const { disconnect } = useDisconnect();
   const {
     activeChain,
@@ -85,6 +92,18 @@ function HeaderUserbox() {
     switchNetwork,
     error: networkError
   } = useNetwork();
+
+  const handleOpen = (): void => {
+    setOpen(true);
+  };
+
+  const handleClose = (): void => {
+    setOpen(false);
+  };
+
+  const handleDialogClose = (): void => {
+    setDialogOpen(false);
+  };
 
   useEffect(() => {
     if (error) {
@@ -102,8 +121,9 @@ function HeaderUserbox() {
   }, [networkError]);
 
   useEffect(() => {
-    if (isConnected && activeChain?.unsupported && switchNetwork)
-      switchNetwork(chains[1].id);
+    if (isConnected && activeChain?.unsupported && switchNetwork) {
+    }
+    switchNetwork(97);
   }, [isConnected, activeChain]);
 
   const handleSnackClose = (): void => {
@@ -131,11 +151,44 @@ function HeaderUserbox() {
             color="primary"
             onClick={() => {
               setActivateError('');
-              connect(connectors[0]);
+              setDialogOpen(true);
+              // connect(connectors[0]);
             }}
           >
             Connect Wallet
           </Button>
+          <Dialog
+            open={isDialogOpen}
+            onClose={handleDialogClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {'Connect Wallet'}
+            </DialogTitle>
+            {connectors.map((x) => (
+              <ListItem
+                button
+                disabled={!x.ready}
+                key={x.id}
+                onClick={() => connect(x)}
+              >
+                <ListItemAvatar>
+                  <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                    <PersonIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={x.name}
+                  secondary={
+                    isConnecting &&
+                    pendingConnector?.id === x.id &&
+                    ' (connecting)'
+                  }
+                />
+              </ListItem>
+            ))}
+          </Dialog>
         </>
       )}
       {isConnected && (
