@@ -197,7 +197,7 @@ function HeaderUserbox() {
             {connectors.map((x) => (
               <ListItem
                 button
-                disabled={!x.ready}
+                // disabled={!x.ready}
                 key={x.id}
                 onClick={() => connect(x)}
                 sx={{ p: 2 }}
