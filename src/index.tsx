@@ -81,7 +81,7 @@ const coinbaseWalletConnector = ({
     }
   });
 
-const metaMaskConnector = new MetaMaskConnector({
+const injectedConnector = new InjectedConnector({
   chains,
   options: {
     shimDisconnect: true
@@ -103,9 +103,9 @@ const walletConnectConnector = ({
 
 const connectors = (config: { chainId?: number | undefined }) => {
   return [
-    // injectedConnector,
+    injectedConnector,
     coinbaseWalletConnector(config),
-    metaMaskConnector,
+    // metaMaskConnector,
     walletConnectConnector(config)
   ];
 };

@@ -230,12 +230,12 @@ function SidebarMenu() {
         }
       >
         <ListItem component="div">
-          <Button href={'https://twitter.com'} target="_blank" startIcon={<ChatTwoToneIcon />}>
+          <Button href={'https://twitter.com/ogasaswap'} target="_blank" startIcon={<ChatTwoToneIcon />}>
             Twitter
           </Button>
         </ListItem>
         <ListItem component="div">
-          <Button href={'https://telegram.com'} target="_blank" startIcon={<ThumbUpTwoToneIcon />}>
+          <Button href={'https://t.me/ogasaswapchannel'} target="_blank" startIcon={<ThumbUpTwoToneIcon />}>
             Telegram
           </Button>
         </ListItem>

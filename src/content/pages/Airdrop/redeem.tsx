@@ -43,7 +43,7 @@ function PageHeader() {
         </Typography>
         <Typography variant="subtitle2">
           To redeem your airdrop, purchase OGASA and get extra bonus tokens.
-          Bonus tokens are sent automatically to your wallet.
+          Tokens are sent automatically to your wallet according to the tokenomics.
         </Typography>
         <Typography variant="h5">
           Airdrops can ONLY be redeemed once.
@@ -64,7 +64,7 @@ const RedeemPage = () => {
   const { data: signer } = useSigner();
 
   const OgasaDropContract = new ethers.Contract(
-    '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+    '0x5FbDB2315678afecb367f032d93F642f64180aa3',
     OgasaDropContractInterface,
     signer
   ) as OgasaDrop;
@@ -137,13 +137,13 @@ const RedeemPage = () => {
                       variant: 'subtitle2',
                       lineHeight: 1
                     }}
-                    primary="0.00020 BNB"
-                    secondary="Get 100 + extra 50 $OGASA"
+                    primary="0.01666666666666 BNB"
+                    secondary="Get 15 + extra 15 $OGASA"
                   />
                   <Button
                     size="small"
                     variant="outlined"
-                    onClick={() => redeemFunc('0.00020')}
+                    onClick={() => redeemFunc('0.016666666666')}
                   >
                     Choose
                   </Button>
@@ -164,13 +164,13 @@ const RedeemPage = () => {
                       variant: 'subtitle2',
                       lineHeight: 1
                     }}
-                    primary="0.00035 BNB"
-                    secondary="Get 200 + extra 75 $OGASA"
+                    primary="0.033333333333 BNB"
+                    secondary="Get 30 + extra 30 $OGASA"
                   />
                   <Button
                     size="small"
                     variant="outlined"
-                    onClick={() => redeemFunc('0.00035')}
+                    onClick={() => redeemFunc('0.03333333333')}
                   >
                     Choose
                   </Button>

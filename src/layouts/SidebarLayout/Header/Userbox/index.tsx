@@ -207,7 +207,7 @@ function HeaderUserbox() {
                     sx={{ bgcolor: blue[100], color: blue[600] }}
                     src={x.id == 'coinbaseWallet'
                     ? '/static/providers/logos/coinbasewallet.svg'
-                    : x.id == 'metaMask'
+                    : x.id == 'injected'
                     ? '/static/providers/logos/metamask.svg'
                     : '/static/providers/logos/walletconnect.svg'}
                   ></Avatar>
