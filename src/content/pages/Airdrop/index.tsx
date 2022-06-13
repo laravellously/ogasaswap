@@ -22,6 +22,7 @@ function PageHeader() {
         <Typography variant="subtitle2">
           To participate in $OGASA airdrop, share any ONE of the creatives below
           to twitter social media. It has been pre-configured to use our hashtags.
+          You should also follow <a href="https://t.co/Ogasaswap" target={"_blank"}>@ogasaswap</a> and join the <a href="https://t.me/Ogasaswap" target={"_blank"}>telegram channel</a>.  
         </Typography>
         <Typography variant="h5">You can ONLY participate once.</Typography>
       </Grid>

@@ -64,7 +64,7 @@ const RedeemPage = () => {
   const { data: signer } = useSigner();
 
   const OgasaDropContract = new ethers.Contract(
-    '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    '0x4866012dd29fd7a69be886398259dcbc9ae1e2f7',
     OgasaDropContractInterface,
     signer
   ) as OgasaDrop;
@@ -86,7 +86,7 @@ const RedeemPage = () => {
         value: ethers.utils.parseEther(amount)
       });
       setErrorMsg(
-        'Thank you for participating in our airdrop. You can purchase more tokens using our crowdsale'
+        'Thank you for participating in our airdrop.'
       );
       setOpen(true);
     } catch (e: any) {
@@ -137,7 +137,7 @@ const RedeemPage = () => {
                       variant: 'subtitle2',
                       lineHeight: 1
                     }}
-                    primary="0.01666666666666 BNB"
+                    primary="0.0167 BNB"
                     secondary="Get 15 + extra 15 $OGASA"
                   />
                   <Button
@@ -164,7 +164,7 @@ const RedeemPage = () => {
                       variant: 'subtitle2',
                       lineHeight: 1
                     }}
-                    primary="0.033333333333 BNB"
+                    primary="0.033 BNB"
                     secondary="Get 30 + extra 30 $OGASA"
                   />
                   <Button
