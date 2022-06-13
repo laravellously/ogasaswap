@@ -45,7 +45,7 @@ const AirdropPage = () => {
             <Card>
               <CardMedia
                 sx={{ height: 240 }}
-                image="/static/images/placeholders/covers/6.jpg"
+                image="/static/images/1.jpg"
                 title="Airdrop"
               />
               <CardContent>
@@ -66,7 +66,7 @@ const AirdropPage = () => {
             <Card>
               <CardMedia
                 sx={{ height: 240 }}
-                image="/static/images/placeholders/covers/6.jpg"
+                image="/static/images/6.jpg"
                 title="Airdrop"
               />
               <CardContent>
@@ -87,7 +87,7 @@ const AirdropPage = () => {
             <Card>
               <CardMedia
                 sx={{ height: 240 }}
-                image="/static/images/placeholders/covers/6.jpg"
+                image="/static/images/5.jpg"
                 title="Airdrop"
               />
               <CardContent>
