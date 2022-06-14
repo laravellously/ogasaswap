@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 import {
   Card,
   Grid,
@@ -22,7 +21,7 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import AddTaskTwoToneIcon from '@mui/icons-material/AddTaskTwoTone';
 import { styled } from '@mui/material/styles';
 import { ethers } from 'ethers';
-import { useAccount, useSigner } from 'wagmi';
+import { useAccount, useContractWrite, useSigner } from 'wagmi';
 import OgasaDropContractAbi from 'src/contracts/OgasaDrop.json';
 import type { OgasaDrop } from 'src/types/OgasaDrop';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -44,7 +43,7 @@ function PageHeader() {
         </Typography>
         <Typography variant="subtitle2">
           To redeem your airdrop, purchase OGASA and get extra bonus tokens.
-          Tokens are sent automatically to your wallet according to the tokenomics.
+          Tokens are sent automatically to your wallet according to the tokenomics. To view your $OGASA balance, import this following address into your wallet: 
         </Typography>
         <Typography variant="h5">
           Airdrops can ONLY be redeemed once.
@@ -67,7 +66,7 @@ const RedeemPage = () => {
   const { data: signer } = useSigner();
 
   const OgasaDropContract = new ethers.Contract(
-    '0x4866012Dd29FD7a69Be886398259Dcbc9aE1E2f7',
+    '0xd3D61c0e2d65B8a9d1Dbe638433E9A139d537306',
     OgasaDropContractInterface,
     signer
   ) as OgasaDrop;
@@ -76,6 +75,34 @@ const RedeemPage = () => {
     setOpen(false);
     setErrorMsg('');
   };
+
+  const { data: contractData, write } = useContractWrite(
+    {
+      addressOrName: '0xd3D61c0e2d65B8a9d1Dbe638433E9A139d537306',
+      contractInterface: OgasaDropContractInterface,
+    },
+    'participate',
+    {
+      onSuccess(data: any) {
+        console.log('Success', data)
+        setErrorMsg(
+          'Thank you for participating in our airdrop.'
+        );
+        setOpen(true);
+        setLoading(false)
+        setBtnDisabled(false)
+      },
+      onError(error: any) {
+        console.log('An error occured: ', error)
+        setErrorMsg(
+          'Oops! An error occured.'
+        );
+        setOpen(true);
+        setLoading(false)
+        setBtnDisabled(false)
+      },
+    }
+  )
 
   const redeemFunc = async (amount: string) => {
     setLoading(true)
@@ -97,15 +124,15 @@ const RedeemPage = () => {
       return;
     }
     try {
-      await OgasaDropContract.participate(userAcc, {
-        value: ethers.utils.parseEther(amount)
-      });
-      setErrorMsg(
-        'Thank you for participating in our airdrop.'
-      );
-      setOpen(true);
-      setLoading(false)
-      setBtnDisabled(false)
+      // await OgasaDropContract.participate(userAcc, {
+      //   value: ethers.utils.parseEther(amount)
+      // });
+      write({
+        args: userAcc,
+        overrides: {
+          value:  ethers.utils.parseEther(amount),
+        }
+      })
     } catch (e: any) {
       setErrorMsg('An Error Occured: ' + e.message);
       setOpen(true);
@@ -156,15 +183,15 @@ const RedeemPage = () => {
                       variant: 'subtitle2',
                       lineHeight: 1
                     }}
-                    primary="0.0167 BNB"
-                    secondary="Get 15 + extra 15 $OGASA"
+                    primary="0.0225 BNB ($5)"
+                    secondary="Get 50 + extra 50 $OGASA"
                   />
                   <LoadingButton
                     size="small"
                     variant="outlined"
                     loading={loading}
                     disabled={disabled}
-                    onClick={() => redeemFunc('0.016666666666')}
+                    onClick={() => redeemFunc('0.0225')}
                   >
                     Choose
                   </LoadingButton>
@@ -185,15 +212,15 @@ const RedeemPage = () => {
                       variant: 'subtitle2',
                       lineHeight: 1
                     }}
-                    primary="0.033 BNB"
-                    secondary="Get 30 + extra 30 $OGASA"
+                    primary="0.045 BNB ($10)"
+                    secondary="Get 100 + extra 100 $OGASA"
                   />
                   <LoadingButton
                     size="small"
                     variant="outlined"
                     loading={loading}
                     disabled={disabled}
-                    onClick={() => redeemFunc('0.016666666666')}
+                    onClick={() => redeemFunc('0.045')}
                   >
                     Choose
                   </LoadingButton>
@@ -214,15 +241,15 @@ const RedeemPage = () => {
                       variant: 'subtitle2',
                       lineHeight: 1
                     }}
-                    primary="0.00075 BNB"
-                    secondary="Get 400 + extra 180 $OGASA"
+                    primary="0.065 BNB ($15)"
+                    secondary="Get 150 + extra 150 $OGASA"
                   />
                   <LoadingButton
                     size="small"
                     variant="outlined"
                     loading={loading}
                     disabled={disabled}
-                    onClick={() => redeemFunc('0.016666666666')}
+                    onClick={() => redeemFunc('0.065')}
                   >
                     Choose
                   </LoadingButton>
@@ -243,15 +270,15 @@ const RedeemPage = () => {
                       variant: 'subtitle2',
                       lineHeight: 1
                     }}
-                    primary="0.0015 BNB"
-                    secondary="Get 1,000 plus extra 400 $OGASA"
+                    primary="0.09 BNB ($20)"
+                    secondary="Get 200 plus extra 200 $OGASA"
                   />
                   <LoadingButton
                     size="small"
                     variant="outlined"
                     loading={loading}
                     disabled={disabled}
-                    onClick={() => redeemFunc('0.016666666666')}
+                    onClick={() => redeemFunc('0.09')}
                   >
                     Choose
                   </LoadingButton>
@@ -272,15 +299,218 @@ const RedeemPage = () => {
                       variant: 'subtitle2',
                       lineHeight: 1
                     }}
-                    primary="0.0025 BNB"
-                    secondary="Get 2,000 plus extra 650 $OGASA"
+                    primary="0.1125 BNB ($25)"
+                    secondary="Get 250 plus extra 250 $OGASA"
                   />
                   <LoadingButton
                     size="small"
                     variant="outlined"
                     loading={loading}
                     disabled={disabled}
-                    onClick={() => redeemFunc('0.016666666666')}
+                    onClick={() => redeemFunc('0.1125')}
+                  >
+                    Choose
+                  </LoadingButton>
+                </ListItem>
+                <Divider component="li" />
+                <ListItem sx={{ p: 3 }}>
+                  <ListItemAvatar sx={{ pr: 2 }}>
+                    <AvatarSuccess>
+                      <AddTaskTwoToneIcon />
+                    </AvatarSuccess>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      variant: 'h5',
+                      gutterBottom: true
+                    }}
+                    secondaryTypographyProps={{
+                      variant: 'subtitle2',
+                      lineHeight: 1
+                    }}
+                    primary="0.135 BNB ($30)"
+                    secondary="Get 300 + extra 300 $OGASA"
+                  />
+                  <LoadingButton
+                    size="small"
+                    variant="outlined"
+                    loading={loading}
+                    disabled={disabled}
+                    onClick={() => redeemFunc('0.135')}
+                  >
+                    Choose
+                  </LoadingButton>
+                </ListItem>
+                <Divider component="li" />
+                <ListItem sx={{ p: 3 }}>
+                  <ListItemAvatar sx={{ pr: 2 }}>
+                    <AvatarSuccess>
+                      <AddTaskTwoToneIcon />
+                    </AvatarSuccess>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      variant: 'h5',
+                      gutterBottom: true
+                    }}
+                    secondaryTypographyProps={{
+                      variant: 'subtitle2',
+                      lineHeight: 1
+                    }}
+                    primary="0.18 BNB ($40)"
+                    secondary="Get 400 + extra 400 $OGASA"
+                  />
+                  <LoadingButton
+                    size="small"
+                    variant="outlined"
+                    loading={loading}
+                    disabled={disabled}
+                    onClick={() => redeemFunc('0.18')}
+                  >
+                    Choose
+                  </LoadingButton>
+                </ListItem>
+                <Divider component="li" />
+                <ListItem sx={{ p: 3 }}>
+                  <ListItemAvatar sx={{ pr: 2 }}>
+                    <AvatarSuccess>
+                      <AddTaskTwoToneIcon />
+                    </AvatarSuccess>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      variant: 'h5',
+                      gutterBottom: true
+                    }}
+                    secondaryTypographyProps={{
+                      variant: 'subtitle2',
+                      lineHeight: 1
+                    }}
+                    primary="0.225 BNB ($50)"
+                    secondary="Get 500 + extra 500 $OGASA"
+                  />
+                  <LoadingButton
+                    size="small"
+                    variant="outlined"
+                    loading={loading}
+                    disabled={disabled}
+                    onClick={() => redeemFunc('0.225')}
+                  >
+                    Choose
+                  </LoadingButton>
+                </ListItem>
+                <Divider component="li" />
+                <ListItem sx={{ p: 3 }}>
+                  <ListItemAvatar sx={{ pr: 2 }}>
+                    <AvatarSuccess>
+                      <AddTaskTwoToneIcon />
+                    </AvatarSuccess>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      variant: 'h5',
+                      gutterBottom: true
+                    }}
+                    secondaryTypographyProps={{
+                      variant: 'subtitle2',
+                      lineHeight: 1
+                    }}
+                    primary="0.45 BNB ($100)"
+                    secondary="Get 1000 + extra 1000 $OGASA"
+                  />
+                  <LoadingButton
+                    size="small"
+                    variant="outlined"
+                    loading={loading}
+                    disabled={disabled}
+                    onClick={() => redeemFunc('0.45')}
+                  >
+                    Choose
+                  </LoadingButton>
+                </ListItem>
+                <Divider component="li" />
+                <ListItem sx={{ p: 3 }}>
+                  <ListItemAvatar sx={{ pr: 2 }}>
+                    <AvatarSuccess>
+                      <AddTaskTwoToneIcon />
+                    </AvatarSuccess>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      variant: 'h5',
+                      gutterBottom: true
+                    }}
+                    secondaryTypographyProps={{
+                      variant: 'subtitle2',
+                      lineHeight: 1
+                    }}
+                    primary="0.9 BNB ($200)"
+                    secondary="Get 2000 + extra 2000 $OGASA"
+                  />
+                  <LoadingButton
+                    size="small"
+                    variant="outlined"
+                    loading={loading}
+                    disabled={disabled}
+                    onClick={() => redeemFunc('0.9')}
+                  >
+                    Choose
+                  </LoadingButton>
+                </ListItem>
+                <Divider component="li" />
+                <ListItem sx={{ p: 3 }}>
+                  <ListItemAvatar sx={{ pr: 2 }}>
+                    <AvatarSuccess>
+                      <AddTaskTwoToneIcon />
+                    </AvatarSuccess>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      variant: 'h5',
+                      gutterBottom: true
+                    }}
+                    secondaryTypographyProps={{
+                      variant: 'subtitle2',
+                      lineHeight: 1
+                    }}
+                    primary="2.25 BNB ($500)"
+                    secondary="Get 5000 + extra 5000 $OGASA"
+                  />
+                  <LoadingButton
+                    size="small"
+                    variant="outlined"
+                    loading={loading}
+                    disabled={disabled}
+                    onClick={() => redeemFunc('2.25')}
+                  >
+                    Choose
+                  </LoadingButton>
+                </ListItem>
+                <Divider component="li" />
+                <ListItem sx={{ p: 3 }}>
+                  <ListItemAvatar sx={{ pr: 2 }}>
+                    <AvatarSuccess>
+                      <AddTaskTwoToneIcon />
+                    </AvatarSuccess>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      variant: 'h5',
+                      gutterBottom: true
+                    }}
+                    secondaryTypographyProps={{
+                      variant: 'subtitle2',
+                      lineHeight: 1
+                    }}
+                    primary="4.5 BNB ($1000)"
+                    secondary="Get 10000 + extra 10000 $OGASA"
+                  />
+                  <LoadingButton
+                    size="small"
+                    variant="outlined"
+                    loading={loading}
+                    disabled={disabled}
+                    onClick={() => redeemFunc('4.5')}
                   >
                     Choose
                   </LoadingButton>
