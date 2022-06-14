@@ -25,6 +25,7 @@ import { ethers } from 'ethers';
 import { useAccount, useSigner } from 'wagmi';
 import OgasaDropContractAbi from 'src/contracts/OgasaDrop.json';
 import type { OgasaDrop } from 'src/types/OgasaDrop';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -55,6 +56,8 @@ function PageHeader() {
 
 const RedeemPage = () => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [disabled, setBtnDisabled] = useState(false)
   const [errorMsg, setErrorMsg] = useState('');
   const { data: account } = useAccount();
 
@@ -74,18 +77,23 @@ const RedeemPage = () => {
     setErrorMsg('');
   };
 
-  console.log(OgasaDropContract.weiRaised())
-
   const redeemFunc = async (amount: string) => {
-    const userAcc = account ? account.address : '';
+    setLoading(true)
+    setBtnDisabled(true)
+    const userAcc = account ? account.address : ''
     if (!account) {
       setErrorMsg('You need to connect your wallet first.');
       setOpen(true);
+      setLoading(false)
+      setBtnDisabled(false)
       return;
     }
-    if(await OgasaDropContract.userHasClaimed(userAcc)) {
+    const claimed = await OgasaDropContract.userHasClaimed(userAcc)
+    if(claimed) {
       setErrorMsg('You have already claimed your airdrop.');
       setOpen(true);
+      setLoading(false)
+      setBtnDisabled(false)
       return;
     }
     try {
@@ -96,9 +104,13 @@ const RedeemPage = () => {
         'Thank you for participating in our airdrop.'
       );
       setOpen(true);
+      setLoading(false)
+      setBtnDisabled(false)
     } catch (e: any) {
       setErrorMsg('An Error Occured: ' + e.message);
       setOpen(true);
+      setLoading(false)
+      setBtnDisabled(false)
     }
   };
   return (
@@ -147,13 +159,15 @@ const RedeemPage = () => {
                     primary="0.0167 BNB"
                     secondary="Get 15 + extra 15 $OGASA"
                   />
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="outlined"
+                    loading={loading}
+                    disabled={disabled}
                     onClick={() => redeemFunc('0.016666666666')}
                   >
                     Choose
-                  </Button>
+                  </LoadingButton>
                 </ListItem>
                 <Divider component="li" />
                 <ListItem sx={{ p: 3 }}>
@@ -174,13 +188,15 @@ const RedeemPage = () => {
                     primary="0.033 BNB"
                     secondary="Get 30 + extra 30 $OGASA"
                   />
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="outlined"
-                    onClick={() => redeemFunc('0.03333333333')}
+                    loading={loading}
+                    disabled={disabled}
+                    onClick={() => redeemFunc('0.016666666666')}
                   >
                     Choose
-                  </Button>
+                  </LoadingButton>
                 </ListItem>
                 <Divider component="li" />
                 <ListItem sx={{ p: 3 }}>
@@ -201,13 +217,15 @@ const RedeemPage = () => {
                     primary="0.00075 BNB"
                     secondary="Get 400 + extra 180 $OGASA"
                   />
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="outlined"
-                    onClick={() => redeemFunc('0.00075')}
+                    loading={loading}
+                    disabled={disabled}
+                    onClick={() => redeemFunc('0.016666666666')}
                   >
                     Choose
-                  </Button>
+                  </LoadingButton>
                 </ListItem>
                 <Divider component="li" />
                 <ListItem sx={{ p: 3 }}>
@@ -228,13 +246,15 @@ const RedeemPage = () => {
                     primary="0.0015 BNB"
                     secondary="Get 1,000 plus extra 400 $OGASA"
                   />
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="outlined"
-                    onClick={() => redeemFunc('0.0015')}
+                    loading={loading}
+                    disabled={disabled}
+                    onClick={() => redeemFunc('0.016666666666')}
                   >
                     Choose
-                  </Button>
+                  </LoadingButton>
                 </ListItem>
                 <Divider component="li" />
                 <ListItem sx={{ p: 3 }}>
@@ -255,13 +275,15 @@ const RedeemPage = () => {
                     primary="0.0025 BNB"
                     secondary="Get 2,000 plus extra 650 $OGASA"
                   />
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="outlined"
-                    onClick={() => redeemFunc('0.0025')}
+                    loading={loading}
+                    disabled={disabled}
+                    onClick={() => redeemFunc('0.016666666666')}
                   >
                     Choose
-                  </Button>
+                  </LoadingButton>
                 </ListItem>
               </List>
             </Card>
