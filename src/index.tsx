@@ -75,9 +75,9 @@ const coinbaseWalletConnector = ({
   new CoinbaseWalletConnector({
     chains,
     options: {
-      appName: 'wagmi',
+      appName: 'ogasa',
       chainId: chainId,
-      jsonRpcUrl: 'https://data-seed-prebsc-2-s2.binance.org:8545/'
+      jsonRpcUrl: 'https://bsc-dataseed.binance.org'
     }
   });
 
@@ -113,7 +113,7 @@ const connectors = (config: { chainId?: number | undefined }) => {
 const provider = ({ chainId }: { chainId?: number | undefined }): any => {
   // return getDefaultProvider();
   const jsonRpcProvider = new providers.JsonRpcProvider(
-    'https://data-seed-prebsc-2-s2.binance.org:8545/',
+    'https://bsc-dataseed.binance.org',
     chainId
   );
   return jsonRpcProvider;

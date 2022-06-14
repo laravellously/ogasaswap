@@ -149,7 +149,7 @@ function HeaderUserbox() {
 
   useEffect(() => {
     if (isConnected && activeChain?.unsupported && switchNetwork)
-      switchNetwork(97);
+      switchNetwork(56);
   }, [isConnected, activeChain]);
 
   const handleSnackClose = (): void => {
