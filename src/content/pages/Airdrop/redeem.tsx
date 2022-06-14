@@ -64,7 +64,7 @@ const RedeemPage = () => {
   const { data: signer } = useSigner();
 
   const OgasaDropContract = new ethers.Contract(
-    '0x4866012dd29fd7a69be886398259dcbc9ae1e2f7',
+    '0x4866012Dd29FD7a69Be886398259Dcbc9aE1E2f7',
     OgasaDropContractInterface,
     signer
   ) as OgasaDrop;
@@ -74,13 +74,20 @@ const RedeemPage = () => {
     setErrorMsg('');
   };
 
+  console.log(OgasaDropContract.weiRaised())
+
   const redeemFunc = async (amount: string) => {
+    const userAcc = account ? account.address : '';
     if (!account) {
       setErrorMsg('You need to connect your wallet first.');
       setOpen(true);
       return;
     }
-    const userAcc = account ? account.address : '';
+    if(await OgasaDropContract.userHasClaimed(userAcc)) {
+      setErrorMsg('You have already claimed your airdrop.');
+      setOpen(true);
+      return;
+    }
     try {
       await OgasaDropContract.participate(userAcc, {
         value: ethers.utils.parseEther(amount)

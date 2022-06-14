@@ -11,6 +11,7 @@ import {
   PopulatedTransaction,
   BaseContract,
   ContractTransaction,
+  Overrides,
   CallOverrides,
 } from "ethers";
 import { BytesLike } from "@ethersproject/bytes";
@@ -18,25 +19,25 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
-interface IERC165Interface extends ethers.utils.Interface {
+interface VRFConsumerBaseInterface extends ethers.utils.Interface {
   functions: {
-    "supportsInterface(bytes4)": FunctionFragment;
+    "rawFulfillRandomness(bytes32,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "supportsInterface",
-    values: [BytesLike]
+    functionFragment: "rawFulfillRandomness",
+    values: [BytesLike, BigNumberish]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "supportsInterface",
+    functionFragment: "rawFulfillRandomness",
     data: BytesLike
   ): Result;
 
   events: {};
 }
 
-export class IERC165 extends BaseContract {
+export class VRFConsumerBase extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -77,40 +78,45 @@ export class IERC165 extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: IERC165Interface;
+  interface: VRFConsumerBaseInterface;
 
   functions: {
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    rawFulfillRandomness(
+      requestId: BytesLike,
+      randomness: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
-  supportsInterface(
-    interfaceId: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  rawFulfillRandomness(
+    requestId: BytesLike,
+    randomness: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    supportsInterface(
-      interfaceId: BytesLike,
+    rawFulfillRandomness(
+      requestId: BytesLike,
+      randomness: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<void>;
   };
 
   filters: {};
 
   estimateGas: {
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
+    rawFulfillRandomness(
+      requestId: BytesLike,
+      randomness: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
+    rawFulfillRandomness(
+      requestId: BytesLike,
+      randomness: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

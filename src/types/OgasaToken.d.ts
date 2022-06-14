@@ -21,15 +21,13 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface OgasaTokenInterface extends ethers.utils.Interface {
   functions: {
-    "DEFAULT_ADMIN_ROLE()": FunctionFragment;
     "DOMAIN_SEPARATOR()": FunctionFragment;
-    "MINTER_ROLE()": FunctionFragment;
-    "PAUSER_ROLE()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "burn(uint256)": FunctionFragment;
     "burnFrom(address,uint256)": FunctionFragment;
+    "cap()": FunctionFragment;
     "checkpoints(address,uint32)": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
@@ -40,43 +38,37 @@ interface OgasaTokenInterface extends ethers.utils.Interface {
     "flashLoan(address,address,uint256,bytes)": FunctionFragment;
     "getPastTotalSupply(uint256)": FunctionFragment;
     "getPastVotes(address,uint256)": FunctionFragment;
-    "getRoleAdmin(bytes32)": FunctionFragment;
     "getVotes(address)": FunctionFragment;
-    "grantRole(bytes32,address)": FunctionFragment;
-    "hasRole(bytes32,address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
+    "initialSupply()": FunctionFragment;
     "maxFlashLoan(address)": FunctionFragment;
     "mint(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "numCheckpoints(address)": FunctionFragment;
+    "owner()": FunctionFragment;
     "pause()": FunctionFragment;
     "paused()": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
-    "renounceRole(bytes32,address)": FunctionFragment;
-    "revokeRole(bytes32,address)": FunctionFragment;
-    "supportsInterface(bytes4)": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
     "symbol()": FunctionFragment;
+    "telegramLink()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+    "twitterLink()": FunctionFragment;
     "unpause()": FunctionFragment;
+    "updateExcludedAddress(address)": FunctionFragment;
+    "updateTelegramLink(string)": FunctionFragment;
+    "updateTokenName(string)": FunctionFragment;
+    "updateTwitterLink(string)": FunctionFragment;
+    "updateWebsiteLink(string)": FunctionFragment;
+    "websiteLink()": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "DEFAULT_ADMIN_ROLE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "DOMAIN_SEPARATOR",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "MINTER_ROLE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "PAUSER_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -93,6 +85,7 @@ interface OgasaTokenInterface extends ethers.utils.Interface {
     functionFragment: "burnFrom",
     values: [string, BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "cap", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "checkpoints",
     values: [string, BigNumberish]
@@ -131,22 +124,14 @@ interface OgasaTokenInterface extends ethers.utils.Interface {
     functionFragment: "getPastVotes",
     values: [string, BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "getRoleAdmin",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "getVotes", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "grantRole",
-    values: [BytesLike, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "hasRole",
-    values: [BytesLike, string]
-  ): string;
   encodeFunctionData(
     functionFragment: "increaseAllowance",
     values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "initialSupply",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "maxFlashLoan",
@@ -162,6 +147,7 @@ interface OgasaTokenInterface extends ethers.utils.Interface {
     functionFragment: "numCheckpoints",
     values: [string]
   ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
@@ -177,18 +163,14 @@ interface OgasaTokenInterface extends ethers.utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "renounceRole",
-    values: [BytesLike, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "revokeRole",
-    values: [BytesLike, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "supportsInterface",
-    values: [BytesLike]
+    functionFragment: "renounceOwnership",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "telegramLink",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
@@ -201,22 +183,42 @@ interface OgasaTokenInterface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     values: [string, string, BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "twitterLink",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "updateExcludedAddress",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateTelegramLink",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateTokenName",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateTwitterLink",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateWebsiteLink",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "websiteLink",
+    values?: undefined
+  ): string;
 
   decodeFunctionResult(
-    functionFragment: "DEFAULT_ADMIN_ROLE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "DOMAIN_SEPARATOR",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "MINTER_ROLE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "PAUSER_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
@@ -224,6 +226,7 @@ interface OgasaTokenInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burnFrom", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "cap", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "checkpoints",
     data: BytesLike
@@ -249,15 +252,13 @@ interface OgasaTokenInterface extends ethers.utils.Interface {
     functionFragment: "getPastVotes",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "getRoleAdmin",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "getVotes", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "increaseAllowance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "initialSupply",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -271,19 +272,19 @@ interface OgasaTokenInterface extends ethers.utils.Interface {
     functionFragment: "numCheckpoints",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "renounceRole",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "supportsInterface",
+    functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "telegramLink",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
@@ -293,29 +294,69 @@ interface OgasaTokenInterface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "twitterLink",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updateExcludedAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTelegramLink",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTokenName",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTwitterLink",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateWebsiteLink",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "websiteLink",
+    data: BytesLike
+  ): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
     "DelegateChanged(address,address,address)": EventFragment;
     "DelegateVotesChanged(address,uint256,uint256)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
     "Paused(address)": EventFragment;
-    "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
-    "RoleGranted(bytes32,address,address)": EventFragment;
-    "RoleRevoked(bytes32,address,address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
     "Unpaused(address)": EventFragment;
+    "UpdatedExcludedAddress(address)": EventFragment;
+    "UpdatedTelegramLink(string)": EventFragment;
+    "UpdatedTokenName(string)": EventFragment;
+    "UpdatedTokenSymbol(string)": EventFragment;
+    "UpdatedTwitterLink(string)": EventFragment;
+    "UpdatedWebsiteLink(string)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DelegateChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DelegateVotesChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RoleGranted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RoleRevoked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdatedExcludedAddress"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdatedTelegramLink"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdatedTokenName"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdatedTokenSymbol"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdatedTwitterLink"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdatedWebsiteLink"): EventFragment;
 }
 
 export type ApprovalEvent = TypedEvent<
@@ -342,29 +383,41 @@ export type DelegateVotesChangedEvent = TypedEvent<
   }
 >;
 
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string] & { previousOwner: string; newOwner: string }
+>;
+
 export type PausedEvent = TypedEvent<[string] & { account: string }>;
-
-export type RoleAdminChangedEvent = TypedEvent<
-  [string, string, string] & {
-    role: string;
-    previousAdminRole: string;
-    newAdminRole: string;
-  }
->;
-
-export type RoleGrantedEvent = TypedEvent<
-  [string, string, string] & { role: string; account: string; sender: string }
->;
-
-export type RoleRevokedEvent = TypedEvent<
-  [string, string, string] & { role: string; account: string; sender: string }
->;
 
 export type TransferEvent = TypedEvent<
   [string, string, BigNumber] & { from: string; to: string; value: BigNumber }
 >;
 
 export type UnpausedEvent = TypedEvent<[string] & { account: string }>;
+
+export type UpdatedExcludedAddressEvent = TypedEvent<
+  [string] & { excludedAddress: string }
+>;
+
+export type UpdatedTelegramLinkEvent = TypedEvent<
+  [string] & { newLink: string }
+>;
+
+export type UpdatedTokenNameEvent = TypedEvent<
+  [string] & { tokenName: string }
+>;
+
+export type UpdatedTokenSymbolEvent = TypedEvent<
+  [string] & { tokenSymbol: string }
+>;
+
+export type UpdatedTwitterLinkEvent = TypedEvent<
+  [string] & { newLink: string }
+>;
+
+export type UpdatedWebsiteLinkEvent = TypedEvent<
+  [string] & { newLink: string }
+>;
 
 export class OgasaToken extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -410,13 +463,7 @@ export class OgasaToken extends BaseContract {
   interface: OgasaTokenInterface;
 
   functions: {
-    DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
-
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
-
-    MINTER_ROLE(overrides?: CallOverrides): Promise<[string]>;
-
-    PAUSER_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     allowance(
       owner: string,
@@ -442,6 +489,8 @@ export class OgasaToken extends BaseContract {
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    cap(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     checkpoints(
       account: string,
@@ -499,27 +548,15 @@ export class OgasaToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
-
     getVotes(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    grantRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    hasRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
 
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    initialSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     maxFlashLoan(
       token: string,
@@ -541,6 +578,8 @@ export class OgasaToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[number]>;
 
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -558,24 +597,13 @@ export class OgasaToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    renounceRole(
-      role: BytesLike,
-      account: string,
+    renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    revokeRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
+
+    telegramLink(overrides?: CallOverrides): Promise<[string]>;
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -592,18 +620,46 @@ export class OgasaToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    twitterLink(overrides?: CallOverrides): Promise<[string]>;
+
     unpause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    updateExcludedAddress(
+      excludedAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    updateTelegramLink(
+      link: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    updateTokenName(
+      _name: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    updateTwitterLink(
+      link: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    updateWebsiteLink(
+      link: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    websiteLink(overrides?: CallOverrides): Promise<[string]>;
   };
 
-  DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
-
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
-
-  MINTER_ROLE(overrides?: CallOverrides): Promise<string>;
-
-  PAUSER_ROLE(overrides?: CallOverrides): Promise<string>;
 
   allowance(
     owner: string,
@@ -629,6 +685,8 @@ export class OgasaToken extends BaseContract {
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  cap(overrides?: CallOverrides): Promise<BigNumber>;
 
   checkpoints(
     account: string,
@@ -686,27 +744,15 @@ export class OgasaToken extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
-
   getVotes(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  grantRole(
-    role: BytesLike,
-    account: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  hasRole(
-    role: BytesLike,
-    account: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
 
   increaseAllowance(
     spender: string,
     addedValue: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  initialSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   maxFlashLoan(token: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -721,6 +767,8 @@ export class OgasaToken extends BaseContract {
   nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   numCheckpoints(account: string, overrides?: CallOverrides): Promise<number>;
+
+  owner(overrides?: CallOverrides): Promise<string>;
 
   pause(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -739,24 +787,13 @@ export class OgasaToken extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  renounceRole(
-    role: BytesLike,
-    account: string,
+  renounceOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
-
-  revokeRole(
-    role: BytesLike,
-    account: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  supportsInterface(
-    interfaceId: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
+
+  telegramLink(overrides?: CallOverrides): Promise<string>;
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -773,18 +810,46 @@ export class OgasaToken extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  transferOwnership(
+    newOwner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  twitterLink(overrides?: CallOverrides): Promise<string>;
+
   unpause(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  updateExcludedAddress(
+    excludedAddress: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  updateTelegramLink(
+    link: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  updateTokenName(
+    _name: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  updateTwitterLink(
+    link: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  updateWebsiteLink(
+    link: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  websiteLink(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
-    DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
-
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
-
-    MINTER_ROLE(overrides?: CallOverrides): Promise<string>;
-
-    PAUSER_ROLE(overrides?: CallOverrides): Promise<string>;
 
     allowance(
       owner: string,
@@ -807,6 +872,8 @@ export class OgasaToken extends BaseContract {
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    cap(overrides?: CallOverrides): Promise<BigNumber>;
 
     checkpoints(
       account: string,
@@ -861,27 +928,15 @@ export class OgasaToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
-
     getVotes(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    grantRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    hasRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
 
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    initialSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     maxFlashLoan(token: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -896,6 +951,8 @@ export class OgasaToken extends BaseContract {
     nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     numCheckpoints(account: string, overrides?: CallOverrides): Promise<number>;
+
+    owner(overrides?: CallOverrides): Promise<string>;
 
     pause(overrides?: CallOverrides): Promise<void>;
 
@@ -912,24 +969,11 @@ export class OgasaToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    renounceRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    revokeRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
+
+    telegramLink(overrides?: CallOverrides): Promise<string>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -946,7 +990,29 @@ export class OgasaToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    transferOwnership(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    twitterLink(overrides?: CallOverrides): Promise<string>;
+
     unpause(overrides?: CallOverrides): Promise<void>;
+
+    updateExcludedAddress(
+      excludedAddress: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateTelegramLink(link: string, overrides?: CallOverrides): Promise<void>;
+
+    updateTokenName(_name: string, overrides?: CallOverrides): Promise<void>;
+
+    updateTwitterLink(link: string, overrides?: CallOverrides): Promise<void>;
+
+    updateWebsiteLink(link: string, overrides?: CallOverrides): Promise<void>;
+
+    websiteLink(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -1004,65 +1070,27 @@ export class OgasaToken extends BaseContract {
       { delegate: string; previousBalance: BigNumber; newBalance: BigNumber }
     >;
 
+    "OwnershipTransferred(address,address)"(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
+    >;
+
+    OwnershipTransferred(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
+    >;
+
     "Paused(address)"(
       account?: null
     ): TypedEventFilter<[string], { account: string }>;
 
     Paused(account?: null): TypedEventFilter<[string], { account: string }>;
-
-    "RoleAdminChanged(bytes32,bytes32,bytes32)"(
-      role?: BytesLike | null,
-      previousAdminRole?: BytesLike | null,
-      newAdminRole?: BytesLike | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; previousAdminRole: string; newAdminRole: string }
-    >;
-
-    RoleAdminChanged(
-      role?: BytesLike | null,
-      previousAdminRole?: BytesLike | null,
-      newAdminRole?: BytesLike | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; previousAdminRole: string; newAdminRole: string }
-    >;
-
-    "RoleGranted(bytes32,address,address)"(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; account: string; sender: string }
-    >;
-
-    RoleGranted(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; account: string; sender: string }
-    >;
-
-    "RoleRevoked(bytes32,address,address)"(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; account: string; sender: string }
-    >;
-
-    RoleRevoked(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; account: string; sender: string }
-    >;
 
     "Transfer(address,address,uint256)"(
       from?: string | null,
@@ -1087,16 +1115,58 @@ export class OgasaToken extends BaseContract {
     ): TypedEventFilter<[string], { account: string }>;
 
     Unpaused(account?: null): TypedEventFilter<[string], { account: string }>;
+
+    "UpdatedExcludedAddress(address)"(
+      excludedAddress?: null
+    ): TypedEventFilter<[string], { excludedAddress: string }>;
+
+    UpdatedExcludedAddress(
+      excludedAddress?: null
+    ): TypedEventFilter<[string], { excludedAddress: string }>;
+
+    "UpdatedTelegramLink(string)"(
+      newLink?: null
+    ): TypedEventFilter<[string], { newLink: string }>;
+
+    UpdatedTelegramLink(
+      newLink?: null
+    ): TypedEventFilter<[string], { newLink: string }>;
+
+    "UpdatedTokenName(string)"(
+      tokenName?: null
+    ): TypedEventFilter<[string], { tokenName: string }>;
+
+    UpdatedTokenName(
+      tokenName?: null
+    ): TypedEventFilter<[string], { tokenName: string }>;
+
+    "UpdatedTokenSymbol(string)"(
+      tokenSymbol?: null
+    ): TypedEventFilter<[string], { tokenSymbol: string }>;
+
+    UpdatedTokenSymbol(
+      tokenSymbol?: null
+    ): TypedEventFilter<[string], { tokenSymbol: string }>;
+
+    "UpdatedTwitterLink(string)"(
+      newLink?: null
+    ): TypedEventFilter<[string], { newLink: string }>;
+
+    UpdatedTwitterLink(
+      newLink?: null
+    ): TypedEventFilter<[string], { newLink: string }>;
+
+    "UpdatedWebsiteLink(string)"(
+      newLink?: null
+    ): TypedEventFilter<[string], { newLink: string }>;
+
+    UpdatedWebsiteLink(
+      newLink?: null
+    ): TypedEventFilter<[string], { newLink: string }>;
   };
 
   estimateGas: {
-    DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
-
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
-
-    MINTER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
-
-    PAUSER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: string,
@@ -1122,6 +1192,8 @@ export class OgasaToken extends BaseContract {
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    cap(overrides?: CallOverrides): Promise<BigNumber>;
 
     checkpoints(
       account: string,
@@ -1179,30 +1251,15 @@ export class OgasaToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getRoleAdmin(
-      role: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getVotes(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    grantRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    hasRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    initialSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     maxFlashLoan(token: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1221,6 +1278,8 @@ export class OgasaToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1238,24 +1297,13 @@ export class OgasaToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    renounceRole(
-      role: BytesLike,
-      account: string,
+    renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    revokeRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
+
+    telegramLink(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1272,21 +1320,47 @@ export class OgasaToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    twitterLink(overrides?: CallOverrides): Promise<BigNumber>;
+
     unpause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    updateExcludedAddress(
+      excludedAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    updateTelegramLink(
+      link: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    updateTokenName(
+      _name: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    updateTwitterLink(
+      link: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    updateWebsiteLink(
+      link: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    websiteLink(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    DEFAULT_ADMIN_ROLE(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    MINTER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    PAUSER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
       owner: string,
@@ -1315,6 +1389,8 @@ export class OgasaToken extends BaseContract {
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    cap(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     checkpoints(
       account: string,
@@ -1375,24 +1451,7 @@ export class OgasaToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getRoleAdmin(
-      role: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     getVotes(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    grantRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    hasRole(
-      role: BytesLike,
       account: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1402,6 +1461,8 @@ export class OgasaToken extends BaseContract {
       addedValue: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    initialSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     maxFlashLoan(
       token: string,
@@ -1426,6 +1487,8 @@ export class OgasaToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -1443,24 +1506,13 @@ export class OgasaToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    renounceRole(
-      role: BytesLike,
-      account: string,
+    renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    revokeRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    telegramLink(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1477,8 +1529,42 @@ export class OgasaToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    twitterLink(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     unpause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    updateExcludedAddress(
+      excludedAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateTelegramLink(
+      link: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateTokenName(
+      _name: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateTwitterLink(
+      link: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateWebsiteLink(
+      link: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    websiteLink(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

@@ -19,25 +19,43 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
-interface GreeterInterface extends ethers.utils.Interface {
+interface IRandomNumberGeneratorInterface extends ethers.utils.Interface {
   functions: {
-    "greet()": FunctionFragment;
-    "setGreeting(string)": FunctionFragment;
+    "getRandomNumber(uint256)": FunctionFragment;
+    "viewLatestLotteryId()": FunctionFragment;
+    "viewRandomResult()": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "greet", values?: undefined): string;
-  encodeFunctionData(functionFragment: "setGreeting", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "getRandomNumber",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "viewLatestLotteryId",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "viewRandomResult",
+    values?: undefined
+  ): string;
 
-  decodeFunctionResult(functionFragment: "greet", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setGreeting",
+    functionFragment: "getRandomNumber",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "viewLatestLotteryId",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "viewRandomResult",
     data: BytesLike
   ): Result;
 
   events: {};
 }
 
-export class Greeter extends BaseContract {
+export class IRandomNumberGenerator extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -78,47 +96,62 @@ export class Greeter extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: GreeterInterface;
+  interface: IRandomNumberGeneratorInterface;
 
   functions: {
-    greet(overrides?: CallOverrides): Promise<[string]>;
-
-    setGreeting(
-      _greeting: string,
+    getRandomNumber(
+      _seed: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    viewLatestLotteryId(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    viewRandomResult(overrides?: CallOverrides): Promise<[number]>;
   };
 
-  greet(overrides?: CallOverrides): Promise<string>;
-
-  setGreeting(
-    _greeting: string,
+  getRandomNumber(
+    _seed: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  callStatic: {
-    greet(overrides?: CallOverrides): Promise<string>;
+  viewLatestLotteryId(overrides?: CallOverrides): Promise<BigNumber>;
 
-    setGreeting(_greeting: string, overrides?: CallOverrides): Promise<void>;
+  viewRandomResult(overrides?: CallOverrides): Promise<number>;
+
+  callStatic: {
+    getRandomNumber(
+      _seed: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    viewLatestLotteryId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    viewRandomResult(overrides?: CallOverrides): Promise<number>;
   };
 
   filters: {};
 
   estimateGas: {
-    greet(overrides?: CallOverrides): Promise<BigNumber>;
-
-    setGreeting(
-      _greeting: string,
+    getRandomNumber(
+      _seed: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    viewLatestLotteryId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    viewRandomResult(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    greet(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    setGreeting(
-      _greeting: string,
+    getRandomNumber(
+      _seed: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    viewLatestLotteryId(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    viewRandomResult(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

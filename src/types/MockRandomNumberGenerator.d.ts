@@ -12,7 +12,6 @@ import {
   BaseContract,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   CallOverrides,
 } from "ethers";
 import { BytesLike } from "@ethersproject/bytes";
@@ -20,53 +19,96 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
-interface OgasaDropInterface extends ethers.utils.Interface {
+interface MockRandomNumberGeneratorInterface extends ethers.utils.Interface {
   functions: {
-    "hasClaimed(address)": FunctionFragment;
+    "changeLatestLotteryId()": FunctionFragment;
+    "getRandomNumber(uint256)": FunctionFragment;
+    "latestLotteryId()": FunctionFragment;
+    "nextRandomResult()": FunctionFragment;
+    "ogasaSwapLottery()": FunctionFragment;
     "owner()": FunctionFragment;
-    "participate(address)": FunctionFragment;
+    "randomResult()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "safeRecoverWrongTokens(address,uint256)": FunctionFragment;
-    "safeWithdrawBNB(uint256)": FunctionFragment;
-    "tokenBalance()": FunctionFragment;
+    "setLotteryAddress(address)": FunctionFragment;
+    "setNextRandomResult(uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "userHasClaimed(address)": FunctionFragment;
-    "weiRaised()": FunctionFragment;
+    "viewLatestLotteryId()": FunctionFragment;
+    "viewRandomResult()": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "hasClaimed", values: [string]): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(functionFragment: "participate", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "renounceOwnership",
+    functionFragment: "changeLatestLotteryId",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "safeRecoverWrongTokens",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "safeWithdrawBNB",
+    functionFragment: "getRandomNumber",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "tokenBalance",
+    functionFragment: "latestLotteryId",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "nextRandomResult",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "ogasaSwapLottery",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "randomResult",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setLotteryAddress",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setNextRandomResult",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "userHasClaimed",
-    values: [string]
+    functionFragment: "viewLatestLotteryId",
+    values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "weiRaised", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "viewRandomResult",
+    values?: undefined
+  ): string;
 
-  decodeFunctionResult(functionFragment: "hasClaimed", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "changeLatestLotteryId",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRandomNumber",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "latestLotteryId",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "nextRandomResult",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "ogasaSwapLottery",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "participate",
+    functionFragment: "randomResult",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -74,15 +116,11 @@ interface OgasaDropInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "safeRecoverWrongTokens",
+    functionFragment: "setLotteryAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "safeWithdrawBNB",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokenBalance",
+    functionFragment: "setNextRandomResult",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -90,35 +128,26 @@ interface OgasaDropInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "userHasClaimed",
+    functionFragment: "viewLatestLotteryId",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "weiRaised", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "viewRandomResult",
+    data: BytesLike
+  ): Result;
 
   events: {
-    "Claim(address,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "SafeTokenRecovery(address,uint256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "Claim"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SafeTokenRecovery"): EventFragment;
 }
-
-export type ClaimEvent = TypedEvent<
-  [string, BigNumber] & { to: string; amount: BigNumber }
->;
 
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string] & { previousOwner: string; newOwner: string }
 >;
 
-export type SafeTokenRecoveryEvent = TypedEvent<
-  [string, BigNumber] & { tokenAddress: string; amount: BigNumber }
->;
-
-export class OgasaDrop extends BaseContract {
+export class MockRandomNumberGenerator extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -159,129 +188,135 @@ export class OgasaDrop extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: OgasaDropInterface;
+  interface: MockRandomNumberGeneratorInterface;
 
   functions: {
-    hasClaimed(
-      userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    changeLatestLotteryId(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    getRandomNumber(
+      _seed: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    latestLotteryId(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    nextRandomResult(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    ogasaSwapLottery(overrides?: CallOverrides): Promise<[string]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
-    participate(
-      beneficiary: string,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    randomResult(overrides?: CallOverrides): Promise<[number]>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    safeRecoverWrongTokens(
-      _tokenAddress: string,
-      _tokenAmount: BigNumberish,
+    setLotteryAddress(
+      _ogasaSwapLottery: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    safeWithdrawBNB(
-      amount: BigNumberish,
+    setNextRandomResult(
+      _nextRandomResult: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    tokenBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    userHasClaimed(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
+    viewLatestLotteryId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    weiRaised(overrides?: CallOverrides): Promise<[BigNumber]>;
+    viewRandomResult(overrides?: CallOverrides): Promise<[number]>;
   };
 
-  hasClaimed(userAddress: string, overrides?: CallOverrides): Promise<boolean>;
+  changeLatestLotteryId(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  getRandomNumber(
+    _seed: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  latestLotteryId(overrides?: CallOverrides): Promise<BigNumber>;
+
+  nextRandomResult(overrides?: CallOverrides): Promise<BigNumber>;
+
+  ogasaSwapLottery(overrides?: CallOverrides): Promise<string>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
-  participate(
-    beneficiary: string,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  randomResult(overrides?: CallOverrides): Promise<number>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  safeRecoverWrongTokens(
-    _tokenAddress: string,
-    _tokenAmount: BigNumberish,
+  setLotteryAddress(
+    _ogasaSwapLottery: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  safeWithdrawBNB(
-    amount: BigNumberish,
+  setNextRandomResult(
+    _nextRandomResult: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
-
-  tokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
   transferOwnership(
     newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  userHasClaimed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+  viewLatestLotteryId(overrides?: CallOverrides): Promise<BigNumber>;
 
-  weiRaised(overrides?: CallOverrides): Promise<BigNumber>;
+  viewRandomResult(overrides?: CallOverrides): Promise<number>;
 
   callStatic: {
-    hasClaimed(
-      userAddress: string,
+    changeLatestLotteryId(overrides?: CallOverrides): Promise<void>;
+
+    getRandomNumber(
+      _seed: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<void>;
+
+    latestLotteryId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    nextRandomResult(overrides?: CallOverrides): Promise<BigNumber>;
+
+    ogasaSwapLottery(overrides?: CallOverrides): Promise<string>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
-    participate(beneficiary: string, overrides?: CallOverrides): Promise<void>;
+    randomResult(overrides?: CallOverrides): Promise<number>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
-    safeRecoverWrongTokens(
-      _tokenAddress: string,
-      _tokenAmount: BigNumberish,
+    setLotteryAddress(
+      _ogasaSwapLottery: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    safeWithdrawBNB(
-      amount: BigNumberish,
+    setNextRandomResult(
+      _nextRandomResult: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    tokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    userHasClaimed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+    viewLatestLotteryId(overrides?: CallOverrides): Promise<BigNumber>;
 
-    weiRaised(overrides?: CallOverrides): Promise<BigNumber>;
+    viewRandomResult(overrides?: CallOverrides): Promise<number>;
   };
 
   filters: {
-    "Claim(address,uint256)"(
-      to?: string | null,
-      amount?: null
-    ): TypedEventFilter<[string, BigNumber], { to: string; amount: BigNumber }>;
-
-    Claim(
-      to?: string | null,
-      amount?: null
-    ): TypedEventFilter<[string, BigNumber], { to: string; amount: BigNumber }>;
-
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
       newOwner?: string | null
@@ -297,104 +332,95 @@ export class OgasaDrop extends BaseContract {
       [string, string],
       { previousOwner: string; newOwner: string }
     >;
-
-    "SafeTokenRecovery(address,uint256)"(
-      tokenAddress?: null,
-      amount?: null
-    ): TypedEventFilter<
-      [string, BigNumber],
-      { tokenAddress: string; amount: BigNumber }
-    >;
-
-    SafeTokenRecovery(
-      tokenAddress?: null,
-      amount?: null
-    ): TypedEventFilter<
-      [string, BigNumber],
-      { tokenAddress: string; amount: BigNumber }
-    >;
   };
 
   estimateGas: {
-    hasClaimed(
-      userAddress: string,
-      overrides?: CallOverrides
+    changeLatestLotteryId(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    getRandomNumber(
+      _seed: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    latestLotteryId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    nextRandomResult(overrides?: CallOverrides): Promise<BigNumber>;
+
+    ogasaSwapLottery(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
-    participate(
-      beneficiary: string,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    randomResult(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    safeRecoverWrongTokens(
-      _tokenAddress: string,
-      _tokenAmount: BigNumberish,
+    setLotteryAddress(
+      _ogasaSwapLottery: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    safeWithdrawBNB(
-      amount: BigNumberish,
+    setNextRandomResult(
+      _nextRandomResult: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    tokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    userHasClaimed(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    viewLatestLotteryId(overrides?: CallOverrides): Promise<BigNumber>;
 
-    weiRaised(overrides?: CallOverrides): Promise<BigNumber>;
+    viewRandomResult(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    hasClaimed(
-      userAddress: string,
-      overrides?: CallOverrides
+    changeLatestLotteryId(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    getRandomNumber(
+      _seed: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    latestLotteryId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    nextRandomResult(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    ogasaSwapLottery(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    participate(
-      beneficiary: string,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    randomResult(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    safeRecoverWrongTokens(
-      _tokenAddress: string,
-      _tokenAmount: BigNumberish,
+    setLotteryAddress(
+      _ogasaSwapLottery: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    safeWithdrawBNB(
-      amount: BigNumberish,
+    setNextRandomResult(
+      _nextRandomResult: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
-
-    tokenBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    userHasClaimed(
-      arg0: string,
+    viewLatestLotteryId(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    weiRaised(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    viewRandomResult(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

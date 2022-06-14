@@ -13,13 +13,13 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
-      name: "AccessControl",
+      name: "LinkTokenInterface",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.AccessControl__factory>;
+    ): Promise<Contracts.LinkTokenInterface__factory>;
     getContractFactory(
-      name: "IAccessControl",
+      name: "VRFConsumerBase",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IAccessControl__factory>;
+    ): Promise<Contracts.VRFConsumerBase__factory>;
     getContractFactory(
       name: "Ownable",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -57,6 +57,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Burnable__factory>;
     getContractFactory(
+      name: "ERC20Capped",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20Capped__factory>;
+    getContractFactory(
       name: "ERC20FlashMint",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20FlashMint__factory>;
@@ -73,44 +77,48 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
-      name: "ERC165",
+      name: "IOgasaSwapLottery",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC165__factory>;
+    ): Promise<Contracts.IOgasaSwapLottery__factory>;
     getContractFactory(
-      name: "IERC165",
+      name: "IRandomNumberGenerator",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC165__factory>;
-    getContractFactory(
-      name: "Greeter",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Greeter__factory>;
-    getContractFactory(
-      name: "OgasaCrowdSale",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.OgasaCrowdSale__factory>;
+    ): Promise<Contracts.IRandomNumberGenerator__factory>;
     getContractFactory(
       name: "OgasaDrop",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.OgasaDrop__factory>;
     getContractFactory(
+      name: "OgasaSwapLottery",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.OgasaSwapLottery__factory>;
+    getContractFactory(
       name: "OgasaToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.OgasaToken__factory>;
     getContractFactory(
-      name: "TokenVesting",
+      name: "RandomNumberGenerator",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.TokenVesting__factory>;
+    ): Promise<Contracts.RandomNumberGenerator__factory>;
+    getContractFactory(
+      name: "MockERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MockERC20__factory>;
+    getContractFactory(
+      name: "MockRandomNumberGenerator",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MockRandomNumberGenerator__factory>;
 
     getContractAt(
-      name: "AccessControl",
+      name: "LinkTokenInterface",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.AccessControl>;
+    ): Promise<Contracts.LinkTokenInterface>;
     getContractAt(
-      name: "IAccessControl",
+      name: "VRFConsumerBase",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IAccessControl>;
+    ): Promise<Contracts.VRFConsumerBase>;
     getContractAt(
       name: "Ownable",
       address: string,
@@ -157,6 +165,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ERC20Burnable>;
     getContractAt(
+      name: "ERC20Capped",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20Capped>;
+    getContractAt(
       name: "ERC20FlashMint",
       address: string,
       signer?: ethers.Signer
@@ -177,40 +190,45 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
     getContractAt(
-      name: "ERC165",
+      name: "IOgasaSwapLottery",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ERC165>;
+    ): Promise<Contracts.IOgasaSwapLottery>;
     getContractAt(
-      name: "IERC165",
+      name: "IRandomNumberGenerator",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IERC165>;
-    getContractAt(
-      name: "Greeter",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Greeter>;
-    getContractAt(
-      name: "OgasaCrowdSale",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.OgasaCrowdSale>;
+    ): Promise<Contracts.IRandomNumberGenerator>;
     getContractAt(
       name: "OgasaDrop",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.OgasaDrop>;
     getContractAt(
+      name: "OgasaSwapLottery",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.OgasaSwapLottery>;
+    getContractAt(
       name: "OgasaToken",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.OgasaToken>;
     getContractAt(
-      name: "TokenVesting",
+      name: "RandomNumberGenerator",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.TokenVesting>;
+    ): Promise<Contracts.RandomNumberGenerator>;
+    getContractAt(
+      name: "MockERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MockERC20>;
+    getContractAt(
+      name: "MockRandomNumberGenerator",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MockRandomNumberGenerator>;
 
     // default types
     getContractFactory(
