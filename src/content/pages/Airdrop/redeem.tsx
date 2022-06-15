@@ -94,8 +94,9 @@ const RedeemPage = () => {
       },
       onError(error: any) {
         console.log('An error occured: ', error)
+        const errorMsg = error.data.code == -32000 ? 'Insufficient Funds' : ''
         setErrorMsg(
-          'Oops! An error occured.'
+          'Oops! An error occured: '+errorMsg
         );
         setOpen(true);
         setLoading(false)

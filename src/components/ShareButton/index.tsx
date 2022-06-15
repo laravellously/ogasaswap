@@ -1,5 +1,6 @@
 import { Button } from '@mui/material';
 import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone';
+import { useNavigate } from 'react-router';
 
 function windowOpen(
   url: string,
@@ -65,6 +66,7 @@ function objectToGetParams(object: {
 }
 
 export const ShareButton = () => {
+  const navigate = useNavigate()
   const link =
     'https://twitter.com/intent/tweet' +
     objectToGetParams({
@@ -93,7 +95,10 @@ export const ShareButton = () => {
       size="small"
       startIcon={<ShareTwoToneIcon />}
       variant="outlined"
-      onClick={() => windowOpen(link, windowConfig)}
+      onClick={() => { 
+        windowOpen(link, windowConfig)
+        navigate("/redeem")
+      }}
     >
       Share To Twitter
     </Button>
