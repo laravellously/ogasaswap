@@ -84,7 +84,7 @@ const coinbaseWalletConnector = ({
 const injectedConnector = new InjectedConnector({
   chains,
   options: {
-    shimDisconnect: true
+    shimDisconnect: true,
   }
 });
 
@@ -96,8 +96,11 @@ const walletConnectConnector = ({
   new WalletConnectConnector({
     chains,
     options: {
-      chainId,
-      qrcode: true
+      chainId: 56,
+      qrcode: true,
+      rpc: {
+        56: 'https://bsc-dataseed.binance.org'
+      }
     }
   });
 

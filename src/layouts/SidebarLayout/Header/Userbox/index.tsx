@@ -148,7 +148,7 @@ function HeaderUserbox() {
   }, [networkError]);
 
   useEffect(() => {
-    if (isConnected && activeChain?.unsupported && switchNetwork)
+    if (isConnected && activeChain.id != 56 && switchNetwork)
       switchNetwork(56);
   }, [isConnected, activeChain]);
 
