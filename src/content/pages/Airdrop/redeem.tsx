@@ -21,7 +21,7 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import AddTaskTwoToneIcon from '@mui/icons-material/AddTaskTwoTone';
 import { styled } from '@mui/material/styles';
 import { ethers } from 'ethers';
-import { useAccount, useContractWrite, useSigner } from 'wagmi';
+import { useAccount, useBalance, useContractWrite, useSigner } from 'wagmi';
 import OgasaDropContractAbi from 'src/contracts/OgasaDrop.json';
 import type { OgasaDrop } from 'src/types/OgasaDrop';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -94,9 +94,9 @@ const RedeemPage = () => {
       },
       onError(error: any) {
         console.log('An error occured: ', error)
-        const errorMsg = error.data.code == -32000 ? 'Insufficient Funds' : ''
+        // const errorMsg = error.data.code == -32000 ? 'Insufficient Funds' : ''
         setErrorMsg(
-          'Oops! An error occured: '+errorMsg
+          'Oops! An error occured. Please try again.'
         );
         setOpen(true);
         setLoading(false)
@@ -124,6 +124,17 @@ const RedeemPage = () => {
       setBtnDisabled(false)
       return;
     }
+    const { data } = useBalance({
+      addressOrName: userAcc,
+      chainId: 56,
+    })
+    if(data?.value.lte(ethers.utils.parseEther(amount))) {
+      setErrorMsg('INSUFFICIENT FUNDS!');
+      setOpen(true);
+      setLoading(false)
+      setBtnDisabled(false)
+      return;
+    }
     try {
       // await OgasaDropContract.participate(userAcc, {
       //   value: ethers.utils.parseEther(amount)
@@ -139,6 +150,7 @@ const RedeemPage = () => {
       setOpen(true);
       setLoading(false)
       setBtnDisabled(false)
+      return;
     }
   };
   return (
