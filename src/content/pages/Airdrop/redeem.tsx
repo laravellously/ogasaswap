@@ -76,6 +76,13 @@ const RedeemPage = () => {
     setErrorMsg('');
   };
 
+  const userAcc = account ? account.address : ''
+
+  const { data: balance } = useBalance({
+    addressOrName: userAcc,
+    chainId: 56,
+  })
+
   const { data: contractData, write } = useContractWrite(
     {
       addressOrName: '0xd3D61c0e2d65B8a9d1Dbe638433E9A139d537306',
@@ -108,7 +115,7 @@ const RedeemPage = () => {
   const redeemFunc = async (amount: string) => {
     setLoading(true)
     setBtnDisabled(true)
-    const userAcc = account ? account.address : ''
+    
     if (!account) {
       setErrorMsg('You need to connect your wallet first.');
       setOpen(true);
@@ -124,11 +131,7 @@ const RedeemPage = () => {
       setBtnDisabled(false)
       return;
     }
-    const { data } = useBalance({
-      addressOrName: userAcc,
-      chainId: 56,
-    })
-    if(data?.value.lte(ethers.utils.parseEther(amount))) {
+    if(balance?.value.lte(ethers.utils.parseEther(amount))) {
       setErrorMsg('INSUFFICIENT FUNDS!');
       setOpen(true);
       setLoading(false)
